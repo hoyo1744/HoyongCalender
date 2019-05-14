@@ -1,6 +1,9 @@
 package com.example.hoyo1.hoyongcalender;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,8 +15,51 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
+
 
 public class MainActivity extends AppCompatActivity {
+
+    public class CalenderInfo{
+        String strID;
+        String strDate;
+        String strStartTime;
+        String strEndTime;
+        String strContent;
+
+        public void setID(String strParam){
+            this.strID=strParam;
+        }
+        public void setDate(String strParam){
+            this.strDate=strParam;
+        }
+        public void setStartTime(String strParam){
+            this.strStartTime=strParam;
+        }
+        public void setStrEndTime(String strParam){
+            this.strEndTime=strParam;
+        }
+        public void setContent(String strParam){
+            this.strContent=strParam;
+        }
+        public String getID(){
+            return strID;
+        }
+        public String getDate(){
+            return strDate;
+        }
+        public String getStartTime(){
+            return strStartTime;
+        }
+        public String getEndTime(){
+            return strEndTime;
+        }
+        public String getContent(){
+            return strContent;
+        }
+    };
+
+
 
 
     //요청메시지
@@ -21,18 +67,31 @@ public class MainActivity extends AppCompatActivity {
 
 
     //변수선언
+    public static ArrayList<CalenderInfo> listCalender;
+    private DatabaseHelper dbHelper;
+    private SQLiteDatabase db;
     public static String strParam;
+    String dbName="calender";
     Toolbar toolbar;
     monthFragment mFragment;
     weekFragment  wFragment;
     dayFragment   dFragment;
 
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //초기화
         Init();
+
+
+
+
     }
 
     @Override
@@ -63,10 +122,14 @@ public class MainActivity extends AppCompatActivity {
         if(requestCode==REQUEST_ADD_EVENT){
             if(resultCode==RESULT_OK){
                 //1.디비에저장
-                
 
 
-
+                String strDate= data.getExtras().getString("date");
+                String strStart=data.getExtras().getString("start");
+                String strEnd=data.getExtras().getString("end");
+                String strContent=data.getExtras().getString("content");
+                Insert(strDate,strStart,strEnd,strContent);
+                getData();
 
                 //2.현재 strParam 프레그먼트열어주기
                 Fragment selected=null;
@@ -91,7 +154,29 @@ public class MainActivity extends AppCompatActivity {
         mFragment=new monthFragment();
         wFragment=new weekFragment();
         dFragment=new dayFragment();
+        listCalender=new ArrayList<CalenderInfo>();
 
+
+        //db오픈
+        boolean isOpen=openDatabase();
+        if(isOpen){
+
+            listCalender.clear();
+            CalenderInfo cInfo=new CalenderInfo();
+            final Cursor cursor=Select();
+            int nRow=cursor.getCount();
+            for(int nIdx=0;nIdx<nRow;nIdx++) {
+                cursor.moveToNext();
+                cInfo.setID(Integer.toString(cursor.getInt(0)));
+                cInfo.setDate(cursor.getString(1));
+                cInfo.setStartTime(cursor.getString(2));
+                cInfo.setStrEndTime(cursor.getString(3));
+                cInfo.setContent(cursor.getString(4));
+                listCalender.add(cInfo);
+            }
+
+
+        }
 
 
 
@@ -148,4 +233,47 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+    private boolean openDatabase(){
+        dbHelper=new DatabaseHelper(this,dbName,null,1);
+        db=dbHelper.getWritableDatabase();
+        return true;
+
+    }
+
+    public Cursor Select(){
+        Cursor c=db.query("calender", null, null, null, null, null, null);
+        return c;
+    }
+
+    public void Insert(String date,String start,String end,String content){
+        ContentValues cInfo=new ContentValues();
+        cInfo.put("date",date);
+        cInfo.put("startTime",start);
+        cInfo.put("endTime",end);
+        cInfo.put("content",content);
+
+        db.insert("calender",null,cInfo);
+
+
+    }
+
+    public void getData(){
+
+        listCalender.clear();
+        CalenderInfo cInfo=new CalenderInfo();
+        Cursor cursor=Select();
+        int nRow=cursor.getCount();
+        for(int nIdx=0;nIdx<nRow;nIdx++) {
+            cursor.moveToNext();
+            cInfo.setID(cursor.getString(0));
+            cInfo.setDate(cursor.getString(1));
+            cInfo.setStartTime(cursor.getString(2));
+            cInfo.setStrEndTime(cursor.getString(3));
+            cInfo.setContent(cursor.getString(4));
+            listCalender.add(cInfo);
+        }
+
+    }
+
 }

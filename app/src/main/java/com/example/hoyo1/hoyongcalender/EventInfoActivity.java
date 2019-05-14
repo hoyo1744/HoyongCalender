@@ -1,6 +1,7 @@
 package com.example.hoyo1.hoyongcalender;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TimePicker;
 
 import java.sql.Time;
@@ -19,9 +21,15 @@ public class EventInfoActivity extends AppCompatActivity {
     DatePicker date;
     TimePicker startTime;
     TimePicker endTime;
+    EditText content;
     String strDate;
     String strStartTime;
     String strEndTime;
+    String strContent;
+
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +38,7 @@ public class EventInfoActivity extends AppCompatActivity {
 
         //초기화
         Init();
+
 
 
     }
@@ -51,6 +60,8 @@ public class EventInfoActivity extends AppCompatActivity {
                 intent.putExtra("date",strDate);
                 intent.putExtra("start",strStartTime);
                 intent.putExtra("end",strEndTime);
+                strContent=content.getText().toString();
+                intent.putExtra("content",strContent);
                 setResult(RESULT_OK,intent);
                 finish();
 
@@ -74,6 +85,7 @@ public class EventInfoActivity extends AppCompatActivity {
         date=(DatePicker)findViewById(R.id.datePicker);
         startTime=(TimePicker)findViewById(R.id.startTime);
         endTime=(TimePicker)findViewById(R.id.endTime);
+        content=(EditText)findViewById(R.id.editTextEventContent);
 
 
 
@@ -87,7 +99,7 @@ public class EventInfoActivity extends AppCompatActivity {
         date.init(date.getYear(),date.getMonth(),date.getDayOfMonth(),new DatePicker.OnDateChangedListener(){
             @Override
             public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                strDate=String.format("%d-%d-%d",monthOfYear,dayOfMonth,year);
+                strDate=String.format("%d-%d-%d",dayOfMonth,monthOfYear,year);
             }
         });
 
@@ -109,5 +121,10 @@ public class EventInfoActivity extends AppCompatActivity {
 
 
 
+
+
+
     }
+
+
 }

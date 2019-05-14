@@ -82,12 +82,12 @@ public class monthFragment extends Fragment {
 
         //monthCalender
         monthCalendar = (MyDynamicCalendar) getView().findViewById(R.id.monthCalendar);
-
-
         monthCalendar.showMonthView();
 
 
-        monthCalendar.addEvent("10-5-2019", "8:00", "8:15", "Today Event 1",R.drawable.ic_brightness_1_black_24dp);
+        ProcessEvent();
+
+
 
         monthCalendar.setOnDateClickListener(new OnDateClickListener() {
             @Override
@@ -161,6 +161,22 @@ public class monthFragment extends Fragment {
 
     private void showMonthViewWithBelowEvents() {
         monthCalendar.showMonthViewWithBelowEvents();
+    }
+
+    public void ProcessEvent(){
+
+        int nEventNum=MainActivity.listCalender.size();
+
+        for(int nIdx=0;nIdx<nEventNum;nIdx++){
+            String strDate=MainActivity.listCalender.get(nIdx).strDate;
+            String strStart=MainActivity.listCalender.get(nIdx).strStartTime;
+            String strEnd=MainActivity.listCalender.get(nIdx).strEndTime;
+            String strContent=MainActivity.listCalender.get(nIdx).strContent;
+
+            monthCalendar.addEvent(strDate, strStart, strEnd, strContent,R.drawable.ic_brightness_1_black_24dp);
+
+        }
+
     }
 
 }
