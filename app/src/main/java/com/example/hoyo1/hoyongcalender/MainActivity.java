@@ -12,6 +12,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    //캘린더정보 자료형
     public class CalenderInfo{
         String strID;
         String strDate;
@@ -65,32 +67,32 @@ public class MainActivity extends AppCompatActivity {
     //요청메시지
     public static final int REQUEST_ADD_EVENT= 10000;
 
+    //디비이름
+    private final String dbName="calender";
 
     //변수선언
     public static ArrayList<CalenderInfo> listCalender;
+    private boolean bIsDatabaseOpen;
+    private DatabaseHandler dbHandler;
+    private monthFragment mFragment;
+    private weekFragment  wFragment;
+    private dayFragment   dFragment;
     private DatabaseHelper dbHelper;
-    private SQLiteDatabase db;
     public static String strParam;
-    String dbName="calender";
-    Toolbar toolbar;
-    monthFragment mFragment;
-    weekFragment  wFragment;
-    dayFragment   dFragment;
-
-
-
+    private SQLiteDatabase db;
+    private Toolbar toolbar;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         //초기화
         Init();
-
-
-
+        //디비오픈
+        OpenDB();
+        //리스트로드
+        LoadList();
 
     }
 
@@ -122,27 +124,15 @@ public class MainActivity extends AppCompatActivity {
         if(requestCode==REQUEST_ADD_EVENT){
             if(resultCode==RESULT_OK){
                 //1.디비에저장
-
-
                 String strDate= data.getExtras().getString("date");
                 String strStart=data.getExtras().getString("start");
                 String strEnd=data.getExtras().getString("end");
                 String strContent=data.getExtras().getString("content");
-                Insert(strDate,strStart,strEnd,strContent);
-                getData();
+                dbHandler.Insert(strDate,strStart,strEnd,strContent);
+                LoadList();
 
-                //2.현재 strParam 프레그먼트열어주기
-                Fragment selected=null;
-                if(strParam.equals("month"))
-                    selected=mFragment;
-                else if(strParam.equals("week"))
-                    selected=wFragment;
-                else
-                    selected=dFragment;
-                FragmentManager fragmentManager=getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.container,selected).commit();
-
+                //2.프레그먼트열기
+                LateOpenFragment();
             }else if(resultCode==RESULT_CANCELED){
 
             }
@@ -151,34 +141,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void Init(){
         toolbar=(Toolbar)findViewById(R.id.toolbar);
+        listCalender=new ArrayList<CalenderInfo>();
         mFragment=new monthFragment();
         wFragment=new weekFragment();
         dFragment=new dayFragment();
-        listCalender=new ArrayList<CalenderInfo>();
-
-
-        //db오픈
-        boolean isOpen=openDatabase();
-        if(isOpen){
-
-            listCalender.clear();
-            CalenderInfo cInfo=new CalenderInfo();
-            final Cursor cursor=Select();
-            int nRow=cursor.getCount();
-            for(int nIdx=0;nIdx<nRow;nIdx++) {
-                cursor.moveToNext();
-                cInfo.setID(Integer.toString(cursor.getInt(0)));
-                cInfo.setDate(cursor.getString(1));
-                cInfo.setStartTime(cursor.getString(2));
-                cInfo.setStrEndTime(cursor.getString(3));
-                cInfo.setContent(cursor.getString(4));
-                listCalender.add(cInfo);
-            }
-
-
-        }
-
-
+        bIsDatabaseOpen=false;
 
         //액션바설정
         setSupportActionBar(toolbar);
@@ -200,24 +167,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 int position=tab.getPosition();
-
-                Fragment selected=null;
-                if(position==0){
-                    strParam="month";
-                    selected=mFragment;
-                }else if(position==1){
-                    strParam="week";
-                    selected=wFragment;
-                }else if(position==2){
-                    strParam="day";
-                    selected=dFragment;
-                }
-
-
-
-                FragmentManager fragmentManager=getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.container,selected).commit();
+                InitialOpenFragment(position);
             }
 
             @Override
@@ -228,52 +178,69 @@ public class MainActivity extends AppCompatActivity {
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
-
-
-
-
     }
 
-    private boolean openDatabase(){
-        dbHelper=new DatabaseHelper(this,dbName,null,1);
-        db=dbHelper.getWritableDatabase();
-        return true;
 
+    public void OpenDB(){
+        if(dbHandler==null){
+            dbHandler=DatabaseHandler.Open(MainActivity.this,dbName);
+            bIsDatabaseOpen=true;
+        }
     }
 
-    public Cursor Select(){
-        Cursor c=db.query("calender", null, null, null, null, null, null);
-        return c;
-    }
+    public void LoadList(){
+        if(bIsDatabaseOpen){
+            listCalender.clear();
 
-    public void Insert(String date,String start,String end,String content){
-        ContentValues cInfo=new ContentValues();
-        cInfo.put("date",date);
-        cInfo.put("startTime",start);
-        cInfo.put("endTime",end);
-        cInfo.put("content",content);
-
-        db.insert("calender",null,cInfo);
-
-
-    }
-
-    public void getData(){
-
-        listCalender.clear();
-        CalenderInfo cInfo=new CalenderInfo();
-        Cursor cursor=Select();
-        int nRow=cursor.getCount();
-        for(int nIdx=0;nIdx<nRow;nIdx++) {
-            cursor.moveToNext();
-            cInfo.setID(cursor.getString(0));
-            cInfo.setDate(cursor.getString(1));
-            cInfo.setStartTime(cursor.getString(2));
-            cInfo.setStrEndTime(cursor.getString(3));
-            cInfo.setContent(cursor.getString(4));
-            listCalender.add(cInfo);
+            Cursor cursor=dbHandler.Select();
+            int nRow=cursor.getCount();
+            for(int nIdx=0;nIdx<nRow;nIdx++) {
+                CalenderInfo cInfo=new CalenderInfo();
+                cursor.moveToNext();
+                cInfo.setID(cursor.getString(0));
+                cInfo.setDate(cursor.getString(1));
+                cInfo.setStartTime(cursor.getString(2));
+                cInfo.setStrEndTime(cursor.getString(3));
+                cInfo.setContent(cursor.getString(4));
+                listCalender.add(cInfo);
+            }
+        }else{
+            Log.e("에러","리스트불러오기");
+            android.os.Process.killProcess(android.os.Process.myPid());
         }
 
+    }
+
+    public void LateOpenFragment(){
+        Fragment selected=null;
+        if(strParam.equals("month"))
+            selected=mFragment;
+        else if(strParam.equals("week"))
+            selected=wFragment;
+        else
+            selected=dFragment;
+        FragmentManager fragmentManager=getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.container,selected).commit();
+
+    }
+
+    public void InitialOpenFragment(int position){
+        Fragment selected=null;
+        if(position==0){
+            strParam="month";
+            selected=mFragment;
+        }else if(position==1){
+            strParam="week";
+            selected=wFragment;
+        }else if(position==2){
+            strParam="day";
+            selected=dFragment;
+        }
+
+        FragmentManager fragmentManager=getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.container,selected).commit();
     }
 
 }

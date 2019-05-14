@@ -159,15 +159,14 @@ public class monthFragment extends Fragment {
         monthCalendar.showMonthView();
     }
 
-    private void showMonthViewWithBelowEvents() {
-        monthCalendar.showMonthViewWithBelowEvents();
-    }
+
 
     public void ProcessEvent(){
 
         int nEventNum=MainActivity.listCalender.size();
 
         for(int nIdx=0;nIdx<nEventNum;nIdx++){
+            String strID=MainActivity.listCalender.get(nIdx).strID;
             String strDate=MainActivity.listCalender.get(nIdx).strDate;
             String strStart=MainActivity.listCalender.get(nIdx).strStartTime;
             String strEnd=MainActivity.listCalender.get(nIdx).strEndTime;

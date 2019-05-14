@@ -36,7 +36,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        String UPDATE_SQL="drop table if exists calender";
+        db.execSQL(UPDATE_SQL);
+        onCreate(db);
     }
 
     @Override
