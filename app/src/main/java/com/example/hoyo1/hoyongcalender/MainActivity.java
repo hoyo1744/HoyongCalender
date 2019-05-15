@@ -16,7 +16,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -221,17 +224,15 @@ public class MainActivity extends AppCompatActivity {
         if(strParam.equals("month")) {
             selected = mFragment;
             mFragment.ProcessEvent();
-
         }
         else if(strParam.equals("week")) {
             selected = wFragment;
-            wFragment.ProcessEvent();;
+            wFragment.ProcessEvent();
+            wFragment.LoadList(CalendarDay.today());
         }
         else {
             selected = dFragment;
         }
-
-
 
 
         //사실 의미 없었다.
