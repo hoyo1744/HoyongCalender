@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 
 import com.example.hoyo1.hoyongcalender.decorator.EventDayDecorator;
 import com.example.hoyo1.hoyongcalender.decorator.OneDayDecorator;
+import com.example.hoyo1.hoyongcalender.decorator.SaturdayDecorator;
+import com.example.hoyo1.hoyongcalender.decorator.SundayDecorator;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
@@ -76,8 +78,6 @@ public class monthFragment extends Fragment {
 
 
 
-
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -86,20 +86,14 @@ public class monthFragment extends Fragment {
         //초기화
         monthCalender=(MaterialCalendarView)getView().findViewById(R.id.monthCaleder);
 
-        //달력설정
-        monthCalender.state().edit()
-                .setFirstDayOfWeek(Calendar.SUNDAY)
-                .setCalendarDisplayMode(CalendarMode.MONTHS).commit();
+        //캘린더옵션세팅
+        SetCalender();
 
         //오늘날짜 설정
         SetToday();
 
-
         //이벤트설정
         ProcessEvent();
-
-
-
     }
 
 
@@ -152,16 +146,12 @@ public class monthFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-
-
     public void SetToday(){
         //오늘날짜 설정
         OneDayDecorator oneDayDecorator;
         oneDayDecorator=new OneDayDecorator();
         monthCalender.addDecorators(oneDayDecorator);
     }
-
-
     public void ProcessEvent(){
 
         int nEventNum=MainActivity.listCalender.size();
@@ -183,11 +173,14 @@ public class monthFragment extends Fragment {
             monthCalender.addDecorators(eventDayDecorator);
         }
 
+    }
+    public void SetCalender(){
+        //달력설정
+        monthCalender.state().edit()
+                .setFirstDayOfWeek(Calendar.SUNDAY)
+                .setCalendarDisplayMode(CalendarMode.MONTHS).commit();
 
-
-
-
-
+        monthCalender.addDecorators(new SundayDecorator(),new SaturdayDecorator());
     }
 
 

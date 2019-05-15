@@ -30,6 +30,8 @@ import com.example.hoyo1.hoyongcalender.List.SingerAdapter;
 import com.example.hoyo1.hoyongcalender.List.SingerItem;
 import com.example.hoyo1.hoyongcalender.decorator.EventDayDecorator;
 import com.example.hoyo1.hoyongcalender.decorator.OneDayDecorator;
+import com.example.hoyo1.hoyongcalender.decorator.SaturdayDecorator;
+import com.example.hoyo1.hoyongcalender.decorator.SundayDecorator;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
@@ -115,49 +117,9 @@ public class weekFragment extends Fragment {
         adapter=new SingerAdapter(getContext());
 
 
+        //캘린더 세팅
+        SetCalender();
 
-
-        //달력설정
-        weekCalender.state().edit()
-                .setFirstDayOfWeek(Calendar.SUNDAY)
-                .setCalendarDisplayMode(CalendarMode.WEEKS).commit();
-
-        //달변경
-        weekCalender.setOnMonthChangedListener(new OnMonthChangedListener() {
-            @Override
-            public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
-                //date란 녀석이다.
-                currentShowFirstDay=new CalendarDay(date.getYear(),date.getMonth()+1,date.getDay());
-
-            }
-        });
-
-        //날짜선택
-        weekCalender.setOnDateChangedListener(new OnDateSelectedListener() {
-            @Override
-            public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-
-                /*
-                //1.팝업테스트
-                PopupMenu popupMenu=new PopupMenu(getContext(),widget);
-                popupMenu.getMenuInflater().inflate(R.menu.menu_check_event,popupMenu.getMenu());
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        Toast.makeText(getActivity(), "테스트", Toast.LENGTH_LONG).show();
-                        return false;
-                    }
-                });
-                popupMenu.show();
-                */
-                //2.리스트뷰테스트
-                CalendarDay d= new CalendarDay(date.getYear(),date.getMonth()+1,date.getDay());
-                LoadList(d);
-
-
-
-            }
-        });
         //오늘날짜 설정
         SetToday();
 
@@ -264,9 +226,6 @@ public class weekFragment extends Fragment {
 
 
     public void LoadList(CalendarDay date) {
-
-
-
         //리스트초기화
         adapter.removeAll();
 
@@ -284,9 +243,6 @@ public class weekFragment extends Fragment {
         listVIew.setAdapter(adapter);
         //리스트 리프레쉬
         adapter.notifyDataSetChanged();
-
-
-
     }
     public void SetListHeader(){
         View header = getLayoutInflater().inflate(R.layout.list_head, null, false);
@@ -296,8 +252,49 @@ public class weekFragment extends Fragment {
         String strCompareDate=Integer.toString(date.getDay())+"-"+Integer.toString(date.getMonth())+"-"+Integer.toString(date.getYear());
         return strCompareDate;
     }
+    public void SetCalender(){
+        //달력설정
+        weekCalender.state().edit()
+                .setFirstDayOfWeek(Calendar.SUNDAY)
+                .setCalendarDisplayMode(CalendarMode.WEEKS).commit();
+        weekCalender.addDecorators(new SundayDecorator(),new SaturdayDecorator());
 
+        //달변경
+        weekCalender.setOnMonthChangedListener(new OnMonthChangedListener() {
+            @Override
+            public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
+                //date란 녀석이다.
+                currentShowFirstDay=new CalendarDay(date.getYear(),date.getMonth()+1,date.getDay());
 
+            }
+        });
+
+        //날짜선택
+        weekCalender.setOnDateChangedListener(new OnDateSelectedListener() {
+            @Override
+            public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+
+                /*
+                //1.팝업테스트
+                PopupMenu popupMenu=new PopupMenu(getContext(),widget);
+                popupMenu.getMenuInflater().inflate(R.menu.menu_check_event,popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        Toast.makeText(getActivity(), "테스트", Toast.LENGTH_LONG).show();
+                        return false;
+                    }
+                });
+                popupMenu.show();
+                */
+                //2.리스트뷰테스트
+                CalendarDay d= new CalendarDay(date.getYear(),date.getMonth()+1,date.getDay());
+                LoadList(d);
+
+            }
+        });
+
+    }
 
 
 }
