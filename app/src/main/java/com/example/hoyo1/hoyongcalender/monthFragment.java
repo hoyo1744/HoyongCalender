@@ -85,6 +85,7 @@ public class monthFragment extends Fragment {
         monthCalendar.showMonthView();
 
 
+
         ProcessEvent();
 
 
@@ -104,6 +105,7 @@ public class monthFragment extends Fragment {
 
 
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -155,7 +157,7 @@ public class monthFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    private void showMonthView() {
+    public void showMonthView() {
         monthCalendar.showMonthView();
     }
 

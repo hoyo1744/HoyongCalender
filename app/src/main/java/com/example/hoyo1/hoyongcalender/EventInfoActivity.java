@@ -1,8 +1,10 @@
 package com.example.hoyo1.hoyongcalender;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -12,7 +14,9 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
+import java.sql.Date;
 import java.sql.Time;
+import java.text.SimpleDateFormat;
 
 public class EventInfoActivity extends AppCompatActivity {
 
@@ -53,6 +57,29 @@ public class EventInfoActivity extends AppCompatActivity {
         int menuItemID=item.getItemId();
         switch(menuItemID){
             case R.id.confirmMenu:
+                strContent=content.getText().toString();
+                if(strContent.isEmpty()){
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(EventInfoActivity.this);
+
+                    //대화상자설정
+                    builder.setTitle("안내");
+                    builder.setMessage("내용을 입력해주세요.");
+                    builder.setIcon(android.R.drawable.ic_dialog_alert);
+
+
+                    //예 버튼 추가
+                    builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+
+                        }
+                    });
+
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                    return false;
+                }
+
 
 
 
@@ -60,7 +87,7 @@ public class EventInfoActivity extends AppCompatActivity {
                 intent.putExtra("date",strDate);
                 intent.putExtra("start",strStartTime);
                 intent.putExtra("end",strEndTime);
-                strContent=content.getText().toString();
+
                 intent.putExtra("content",strContent);
                 setResult(RESULT_OK,intent);
                 finish();
@@ -93,13 +120,17 @@ public class EventInfoActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         ActionBar actionBar=getSupportActionBar();
         actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setDisplayOptions(actionBar.DISPLAY_HOME_AS_UP);
+
+        //각 피커 디폴트값으로 초기화
+        SetDefaultDateAndTime();
 
 
         //데이트피커설정
         date.init(date.getYear(),date.getMonth(),date.getDayOfMonth(),new DatePicker.OnDateChangedListener(){
             @Override
             public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                strDate=String.format("%d-%d-%d",dayOfMonth,monthOfYear,year);
+                strDate=String.format("%d-%d-%d",dayOfMonth,monthOfYear+1,year);
             }
         });
 
@@ -118,11 +149,18 @@ public class EventInfoActivity extends AppCompatActivity {
                 strEndTime=String.format("%d:%d",hourOfDay,minute);
             }
         });
+    }
 
 
+    public void SetDefaultDateAndTime(){
+        long now = System.currentTimeMillis();
+        Date dateTime=new Date(now);
 
+        SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-YYYY");
 
-
+        strDate=sdf.format(dateTime);
+        strStartTime=String.format("%d:%d",0,0);
+        strEndTime=String.format("%d:%d",0,0);
 
     }
 

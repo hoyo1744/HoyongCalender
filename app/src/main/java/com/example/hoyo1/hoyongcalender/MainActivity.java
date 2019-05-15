@@ -131,6 +131,8 @@ public class MainActivity extends AppCompatActivity {
                 dbHandler.Insert(strDate,strStart,strEnd,strContent);
                 LoadList();
 
+
+
                 //2.프레그먼트열기
                 LateOpenFragment();
             }else if(resultCode==RESULT_CANCELED){
@@ -159,9 +161,12 @@ public class MainActivity extends AppCompatActivity {
         tabs.addTab(tabs.newTab().setText("일간"));
 
 
+
         //월간으로 초기설정
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container,mFragment).commit();
+        strParam="month";
+
 
         tabs.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -213,15 +218,26 @@ public class MainActivity extends AppCompatActivity {
 
     public void LateOpenFragment(){
         Fragment selected=null;
-        if(strParam.equals("month"))
-            selected=mFragment;
-        else if(strParam.equals("week"))
-            selected=wFragment;
-        else
-            selected=dFragment;
+        if(strParam.equals("month")) {
+            selected = mFragment;
+            mFragment.showMonthView();
+            mFragment.ProcessEvent();
+        }
+        else if(strParam.equals("week")) {
+            selected = wFragment;
+        }
+        else {
+            selected = dFragment;
+        }
+
+
+
+
+        //사실 의미 없었다.
         FragmentManager fragmentManager=getSupportFragmentManager();
         FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.container,selected).commit();
+
 
     }
 
