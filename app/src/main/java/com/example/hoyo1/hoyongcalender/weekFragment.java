@@ -1,6 +1,7 @@
 package com.example.hoyo1.hoyongcalender;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,8 +16,14 @@ import com.desai.vatsal.mydynamiccalendar.GetEventListListener;
 import com.desai.vatsal.mydynamiccalendar.OnDateClickListener;
 import com.desai.vatsal.mydynamiccalendar.OnEventClickListener;
 import com.desai.vatsal.mydynamiccalendar.OnWeekDayViewClickListener;
+import com.example.hoyo1.hoyongcalender.decorator.EventDayDecorator;
+import com.example.hoyo1.hoyongcalender.decorator.OneDayDecorator;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.CalendarMode;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 
@@ -73,7 +80,7 @@ public class weekFragment extends Fragment {
 
 
     //변수선언
-    MyDynamicCalendar weekCalendar;
+    MaterialCalendarView weekCalender;
     //변수선언끝
 
 
@@ -81,9 +88,18 @@ public class weekFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        weekCalendar=(MyDynamicCalendar)getView().findViewById(R.id.weekCalendar);
-        weekCalendar.showWeekView();
+        //초기화
+        weekCalender=(MaterialCalendarView)getView().findViewById(R.id.monthCaleder);
 
+        //달력설정
+        weekCalender.state().edit()
+                .setFirstDayOfWeek(Calendar.SUNDAY)
+                .setCalendarDisplayMode(CalendarMode.WEEKS).commit();
+
+        //오늘날짜 설정
+        SetToday();
+
+        //이벤트처리
         ProcessEvent();
 
     }
@@ -137,8 +153,11 @@ public class weekFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    public void showWeekView() {
-            weekCalendar.showWeekView();
+    public  void SetToday(){
+        //오늘날짜 설정
+        OneDayDecorator oneDayDecorator;
+        oneDayDecorator=new OneDayDecorator();
+        weekCalender.addDecorators(oneDayDecorator);
     }
 
     public void ProcessEvent(){
@@ -151,7 +170,14 @@ public class weekFragment extends Fragment {
             String strEnd=MainActivity.listCalender.get(nIdx).strEndTime;
             String strContent=MainActivity.listCalender.get(nIdx).strContent;
 
-            weekCalendar.addEvent(strDate, strStart, strEnd, strContent,R.drawable.ic_brightness_1_black_24dp);
+            String[] item=strDate.split("-");
+
+            CalendarDay day;
+            day=CalendarDay.from(Integer.parseInt(item[2]),Integer.parseInt(item[1])-1,Integer.parseInt(item[0]));
+
+            EventDayDecorator eventDayDecorator;
+            eventDayDecorator=new EventDayDecorator(day, Color.RED,getActivity());
+            weekCalender.addDecorators(eventDayDecorator);
         }
     }
 

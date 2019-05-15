@@ -1,24 +1,23 @@
 package com.example.hoyo1.hoyongcalender;
 
-import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.desai.vatsal.mydynamiccalendar.MyDynamicCalendar;
-import com.desai.vatsal.mydynamiccalendar.EventModel;
-import com.desai.vatsal.mydynamiccalendar.GetEventListListener;
-import com.desai.vatsal.mydynamiccalendar.OnDateClickListener;
-import com.desai.vatsal.mydynamiccalendar.OnEventClickListener;
-import com.desai.vatsal.mydynamiccalendar.OnWeekDayViewClickListener;
+
+import com.example.hoyo1.hoyongcalender.decorator.EventDayDecorator;
+import com.example.hoyo1.hoyongcalender.decorator.OneDayDecorator;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.CalendarMode;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -71,37 +70,34 @@ public class monthFragment extends Fragment {
         }
     }
 
-    //변수선언
-    MyDynamicCalendar monthCalendar;
-    //변수선언끝
+
+    //선언
+    MaterialCalendarView monthCalender;
+
+
+
 
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        //monthCalender
-        monthCalendar = (MyDynamicCalendar) getView().findViewById(R.id.monthCalendar);
-        monthCalendar.showMonthView();
+
+        //초기화
+        monthCalender=(MaterialCalendarView)getView().findViewById(R.id.monthCaleder);
+
+        //달력설정
+        monthCalender.state().edit()
+                .setFirstDayOfWeek(Calendar.SUNDAY)
+                .setCalendarDisplayMode(CalendarMode.MONTHS).commit();
+
+        //오늘날짜 설정
+        SetToday();
 
 
-
+        //이벤트설정
         ProcessEvent();
 
-
-
-        monthCalendar.setOnDateClickListener(new OnDateClickListener() {
-            @Override
-            public void onClick(Date date) {
-
-
-            }
-            @Override
-            public void onLongClick(Date date) {
-                Log.e("date", String.valueOf(date));
-
-            }
-        });
 
 
     }
@@ -112,7 +108,6 @@ public class monthFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_month, container, false);
-
 
 
     }
@@ -157,10 +152,14 @@ public class monthFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    public void showMonthView() {
-        monthCalendar.showMonthView();
-    }
 
+
+    public void SetToday(){
+        //오늘날짜 설정
+        OneDayDecorator oneDayDecorator;
+        oneDayDecorator=new OneDayDecorator();
+        monthCalender.addDecorators(oneDayDecorator);
+    }
 
 
     public void ProcessEvent(){
@@ -174,10 +173,23 @@ public class monthFragment extends Fragment {
             String strEnd=MainActivity.listCalender.get(nIdx).strEndTime;
             String strContent=MainActivity.listCalender.get(nIdx).strContent;
 
-            monthCalendar.addEvent(strDate, strStart, strEnd, strContent,R.drawable.ic_brightness_1_black_24dp);
+            String[] item=strDate.split("-");
 
+            CalendarDay day;
+            day=CalendarDay.from(Integer.parseInt(item[2]),Integer.parseInt(item[1])-1,Integer.parseInt(item[0]));
+
+            EventDayDecorator eventDayDecorator;
+            eventDayDecorator=new EventDayDecorator(day, Color.RED,getActivity());
+            monthCalender.addDecorators(eventDayDecorator);
         }
 
+
+
+
+
+
     }
+
+
 
 }

@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void Init(){
         toolbar=(Toolbar)findViewById(R.id.toolbar);
-
+        listCalender=new ArrayList<CalenderInfo>();
         mFragment=new monthFragment();
         wFragment=new weekFragment();
         dFragment=new dayFragment();
@@ -220,11 +220,12 @@ public class MainActivity extends AppCompatActivity {
         Fragment selected=null;
         if(strParam.equals("month")) {
             selected = mFragment;
-            mFragment.showMonthView();
             mFragment.ProcessEvent();
+
         }
         else if(strParam.equals("week")) {
             selected = wFragment;
+            wFragment.ProcessEvent();;
         }
         else {
             selected = dFragment;
