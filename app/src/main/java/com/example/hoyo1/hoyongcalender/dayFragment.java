@@ -3,10 +3,21 @@ package com.example.hoyo1.hoyongcalender;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+
+import com.example.hoyo1.hoyongcalender.List.SingerAdapter;
+import com.example.hoyo1.hoyongcalender.decorator.SaturdayDecorator;
+import com.example.hoyo1.hoyongcalender.decorator.SundayDecorator;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.CalendarMode;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+
+import java.util.Calendar;
 
 
 /**
@@ -60,6 +71,30 @@ public class dayFragment extends Fragment {
         }
     }
 
+    //선언
+    MaterialCalendarView dayCalender;
+    CalendarDay currentShowFirstDay;
+    CalendarDay currentDay;
+    SingerAdapter adapter;
+    ListView listVIew;
+
+
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        //초기화
+        dayCalender=(MaterialCalendarView)getView().findViewById(R.id.dayCalender);
+        listVIew=(ListView)getView().findViewById(R.id.dayListView);
+        adapter=new SingerAdapter(getContext());
+
+        //캘린더 세팅
+        SetCalender();
+
+
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -105,5 +140,16 @@ public class dayFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    public void SetCalender(){
+        dayCalender.state().edit()
+                .setFirstDayOfWeek(Calendar.SUNDAY)
+                .setMinimumDate(CalendarDay.from(2019, 3, 17))
+                .setMaximumDate(CalendarDay.from(2019, 5, 15))
+                .setCalendarDisplayMode(CalendarMode.WEEKS).commit();
+
+
+        dayCalender.addDecorators(new SundayDecorator(),new SaturdayDecorator());
     }
 }

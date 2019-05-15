@@ -100,11 +100,11 @@ public class weekFragment extends Fragment {
 
     //변수선언
     MaterialCalendarView weekCalender;
+    CalendarDay currentShowFirstDay;
+    CalendarDay currentDay;
     SingerAdapter adapter;
     ListView listVIew;
-    CalendarDay currentDay;
-    CalendarDay currentShowFirstDay;
-    //변수선언끝
+
 
 
     @Override
@@ -113,7 +113,7 @@ public class weekFragment extends Fragment {
 
         //초기화
         weekCalender=(MaterialCalendarView)getView().findViewById(R.id.monthCaleder);
-        listVIew=(ListView)getView().findViewById(R.id.listView);
+        listVIew=(ListView)getView().findViewById(R.id.weekListView);
         adapter=new SingerAdapter(getContext());
 
 
