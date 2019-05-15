@@ -3,10 +3,21 @@ package com.example.hoyo1.hoyongcalender;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.desai.vatsal.mydynamiccalendar.MyDynamicCalendar;
+import com.desai.vatsal.mydynamiccalendar.EventModel;
+import com.desai.vatsal.mydynamiccalendar.GetEventListListener;
+import com.desai.vatsal.mydynamiccalendar.OnDateClickListener;
+import com.desai.vatsal.mydynamiccalendar.OnEventClickListener;
+import com.desai.vatsal.mydynamiccalendar.OnWeekDayViewClickListener;
+
+import java.util.ArrayList;
+import java.util.Date;
 
 
 /**
@@ -60,11 +71,29 @@ public class weekFragment extends Fragment {
         }
     }
 
+
+    //변수선언
+    MyDynamicCalendar weekCalendar;
+    //변수선언끝
+
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        weekCalendar=(MyDynamicCalendar)getView().findViewById(R.id.weekCalendar);
+        weekCalendar.showWeekView();
+
+        ProcessEvent();
+
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_week, container, false);
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -107,4 +136,23 @@ public class weekFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+    public void showWeekView() {
+            weekCalendar.showWeekView();
+    }
+
+    public void ProcessEvent(){
+        int nEventNum=MainActivity.listCalender.size();
+
+        for(int nIdx=0;nIdx<nEventNum;nIdx++){
+            String strID=MainActivity.listCalender.get(nIdx).strID;
+            String strDate=MainActivity.listCalender.get(nIdx).strDate;
+            String strStart=MainActivity.listCalender.get(nIdx).strStartTime;
+            String strEnd=MainActivity.listCalender.get(nIdx).strEndTime;
+            String strContent=MainActivity.listCalender.get(nIdx).strContent;
+
+            weekCalendar.addEvent(strDate, strStart, strEnd, strContent,R.drawable.ic_brightness_1_black_24dp);
+        }
+    }
+
 }

@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void Init(){
         toolbar=(Toolbar)findViewById(R.id.toolbar);
-        listCalender=new ArrayList<CalenderInfo>();
+
         mFragment=new monthFragment();
         wFragment=new weekFragment();
         dFragment=new dayFragment();
