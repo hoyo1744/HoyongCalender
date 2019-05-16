@@ -23,12 +23,8 @@ public class EventInfoActivity extends AppCompatActivity {
     //선언
     Toolbar toolbar;
     DatePicker date;
-    TimePicker startTime;
-    TimePicker endTime;
     EditText content;
     String strDate;
-    String strStartTime;
-    String strEndTime;
     String strContent;
 
 
@@ -42,8 +38,6 @@ public class EventInfoActivity extends AppCompatActivity {
 
         //초기화
         Init();
-
-
 
     }
     @Override
@@ -85,9 +79,6 @@ public class EventInfoActivity extends AppCompatActivity {
 
                 Intent intent=new Intent(getApplicationContext(),MainActivity.class);
                 intent.putExtra("date",strDate);
-                intent.putExtra("start",strStartTime);
-                intent.putExtra("end",strEndTime);
-
                 intent.putExtra("content",strContent);
                 setResult(RESULT_OK,intent);
                 finish();
@@ -110,8 +101,6 @@ public class EventInfoActivity extends AppCompatActivity {
 
         toolbar=(Toolbar)findViewById(R.id.toolbar);
         date=(DatePicker)findViewById(R.id.datePicker);
-        startTime=(TimePicker)findViewById(R.id.startTime);
-        endTime=(TimePicker)findViewById(R.id.endTime);
         content=(EditText)findViewById(R.id.editTextEventContent);
 
 
@@ -134,34 +123,14 @@ public class EventInfoActivity extends AppCompatActivity {
             }
         });
 
-        //스타트타임피커설정
-        startTime.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
-            @Override
-            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-                strStartTime=String.format("%d:%d",hourOfDay,minute);
-            }
-        });
-
-        //앤드타임피커설정
-        endTime.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
-            @Override
-            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-                strEndTime=String.format("%d:%d",hourOfDay,minute);
-            }
-        });
     }
 
 
     public void SetDefaultDateAndTime(){
         long now = System.currentTimeMillis();
         Date dateTime=new Date(now);
-
         SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-YYYY");
-
         strDate=sdf.format(dateTime);
-        strStartTime=String.format("%d:%d",0,0);
-        strEndTime=String.format("%d:%d",0,0);
-
     }
 
 

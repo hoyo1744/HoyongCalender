@@ -26,12 +26,10 @@ public class DatabaseHandler {
         return c;
     }
 
-    public void Insert(String date,String start,String end,String content){
+    public void Insert(String date,String content){
         mDB=mHelper.getWritableDatabase();
         ContentValues cInfo=new ContentValues();
         cInfo.put("date",date);
-        cInfo.put("startTime",start);
-        cInfo.put("endTime",end);
         cInfo.put("content",content);
         mDB.insert("calender",null,cInfo);
     }

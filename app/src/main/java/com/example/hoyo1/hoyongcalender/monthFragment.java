@@ -158,8 +158,6 @@ public class monthFragment extends Fragment {
         for(int nIdx=0;nIdx<nEventNum;nIdx++){
             String strID=MainActivity.listCalender.get(nIdx).strID;
             String strDate=MainActivity.listCalender.get(nIdx).strDate;
-            String strStart=MainActivity.listCalender.get(nIdx).strStartTime;
-            String strEnd=MainActivity.listCalender.get(nIdx).strEndTime;
             String strContent=MainActivity.listCalender.get(nIdx).strContent;
 
             String[] item=strDate.split("-");

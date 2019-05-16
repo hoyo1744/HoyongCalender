@@ -128,10 +128,8 @@ public class MainActivity extends AppCompatActivity {
             if(resultCode==RESULT_OK){
                 //1.디비에저장
                 String strDate= data.getExtras().getString("date");
-                String strStart=data.getExtras().getString("start");
-                String strEnd=data.getExtras().getString("end");
                 String strContent=data.getExtras().getString("content");
-                dbHandler.Insert(strDate,strStart,strEnd,strContent);
+                dbHandler.Insert(strDate,strContent);
                 LoadList();
 
 
@@ -206,9 +204,7 @@ public class MainActivity extends AppCompatActivity {
                 CalenderInfo cInfo=new CalenderInfo();
                 cursor.moveToNext();
                 cInfo.setID(cursor.getString(0));
-                cInfo.setDate(cursor.getString(1));
-                cInfo.setStartTime(cursor.getString(2));
-                cInfo.setStrEndTime(cursor.getString(3));
+                cInfo.setDate(cursor.getString(1));;
                 cInfo.setContent(cursor.getString(4));
                 listCalender.add(cInfo);
             }
