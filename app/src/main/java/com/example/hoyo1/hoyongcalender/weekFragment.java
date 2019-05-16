@@ -274,20 +274,6 @@ public class weekFragment extends Fragment {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
 
-                /*
-                //1.팝업테스트
-                PopupMenu popupMenu=new PopupMenu(getContext(),widget);
-                popupMenu.getMenuInflater().inflate(R.menu.menu_check_event,popupMenu.getMenu());
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        Toast.makeText(getActivity(), "테스트", Toast.LENGTH_LONG).show();
-                        return false;
-                    }
-                });
-                popupMenu.show();
-                */
-                //2.리스트뷰테스트
                 CalendarDay d= new CalendarDay(date.getYear(),date.getMonth()+1,date.getDay());
                 LoadList(d);
 

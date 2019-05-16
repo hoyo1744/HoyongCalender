@@ -135,6 +135,8 @@ public class dayFragment extends Fragment {
         //캘린더 세팅
         SetCalender();
 
+        //리스트헤더설정
+        SetListHeader();
 
         //리스트로드
         LoadList(selectedDate);
@@ -323,8 +325,15 @@ public class dayFragment extends Fragment {
         if(Item[1].charAt(0)=='0'){
             Item[1]=String.valueOf(Item[1].charAt(1));
         }
+        if(Item[2].charAt(0)=='0'){
+            Item[2]=String.valueOf(Item[2].charAt(1));
+        }
         String strCompareDate=Item[2]+"-"+Item[1]+"-"+Item[0];
         return strCompareDate;
+    }
+    public void SetListHeader(){
+        View header = getLayoutInflater().inflate(R.layout.list_head, null, false);
+        listVIew.addHeaderView(header);
     }
 
 }
