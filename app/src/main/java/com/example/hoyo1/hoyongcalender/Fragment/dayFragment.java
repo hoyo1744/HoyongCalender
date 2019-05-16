@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,19 +78,19 @@ public class dayFragment extends Fragment {
     }
 
     //선언
-    SingerAdapter adapter;
-    TextView dayCalender;
-    String selectedDate;
-    String selectedYear;
-    String selectedMonth;
-    String selectedDay;
-    String currentMonth;
-    String currentYear;
-    String currentDay;
-    ListView listVIew;
-    String dayOfWeek;
-    ImageButton FastBtn;
-    ImageButton FutureBtn;
+    private SingerAdapter adapter;
+    private TextView dayCalender;
+    private String selectedDate;
+    private String selectedYear;
+    private String selectedMonth;
+    private String selectedDay;
+    private String currentMonth;
+    private String currentYear;
+    private String currentDay;
+    private ListView listVIew;
+    private String dayOfWeek;
+    private ImageButton FastBtn;
+    private ImageButton FutureBtn;
 
 
 
@@ -117,14 +118,7 @@ public class dayFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         //초기화
-        listVIew=(ListView)getView().findViewById(R.id.dayListView);
-        dayCalender=(TextView)getView().findViewById(R.id.dayCalender);
-        adapter=new SingerAdapter(getContext());
-        FastBtn=(ImageButton)getView().findViewById(R.id.previous);
-        FutureBtn=(ImageButton)getView().findViewById(R.id.next);
-
-        FutureBtn.setOnClickListener(onClickListener);
-        FastBtn.setOnClickListener(onClickListener);
+        Init();
 
         //캘린더 세팅
         SetCalender();
@@ -296,11 +290,7 @@ public class dayFragment extends Fragment {
         //리스트초기화
         adapter.removeAll();
 
-
-
-
         int nEventNum = MainActivity.listCalender.size();
-
         for (int nIdx = 0; nIdx < nEventNum; nIdx++) {
             String strDate = MainActivity.listCalender.get(nIdx).strDate;
             String strContent = MainActivity.listCalender.get(nIdx).strContent;
@@ -312,9 +302,7 @@ public class dayFragment extends Fragment {
         listVIew.setAdapter(adapter);
         //리스트 리프레쉬
         adapter.notifyDataSetChanged();
-
     }
-
     public String TranslateCompareDate(String date){
         String[] Item=date.split("-");
         if(Item[1].charAt(0)=='0'){
@@ -329,6 +317,25 @@ public class dayFragment extends Fragment {
     public void SetListHeader(){
         View header = getLayoutInflater().inflate(R.layout.list_head, null, false);
         listVIew.addHeaderView(header);
+    }
+    public void Init(){
+        dayCalender=(TextView)getView().findViewById(R.id.dayCalender);
+        listVIew=(ListView)getView().findViewById(R.id.dayListView);
+        FastBtn=(ImageButton)getView().findViewById(R.id.previous);
+        FutureBtn=(ImageButton)getView().findViewById(R.id.next);
+        FutureBtn.setOnClickListener(onClickListener);
+        FastBtn.setOnClickListener(onClickListener);
+        adapter=new SingerAdapter(getContext());
+
+
+        //컨텍스트메뉴설정
+        registerForContextMenu(listVIew);
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        //super.onCreateContextMenu(menu, v, menuInfo);
+        getActivity().getMenuInflater().inflate(R.menu.menu_detail_event, menu);
     }
 
 }

@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -81,11 +83,11 @@ public class weekFragment extends Fragment {
 
 
     //변수선언
-    MaterialCalendarView weekCalender;
-    CalendarDay currentShowFirstDay;
-    CalendarDay currentDay;
-    SingerAdapter adapter;
-    ListView listVIew;
+    private MaterialCalendarView weekCalender;
+    private CalendarDay currentShowFirstDay;
+    private CalendarDay currentDay;
+    private SingerAdapter adapter;
+    private ListView listVIew;
 
 
 
@@ -94,10 +96,7 @@ public class weekFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         //초기화
-        weekCalender=(MaterialCalendarView)getView().findViewById(R.id.monthCaleder);
-        listVIew=(ListView)getView().findViewById(R.id.weekListView);
-        adapter=new SingerAdapter(getContext());
-
+        Init();
 
         //캘린더 세팅
         SetCalender();
@@ -113,10 +112,6 @@ public class weekFragment extends Fragment {
 
         //리스트뷰
         LoadList(currentDay);
-
-
-
-
     }
 
     @Override
@@ -173,13 +168,12 @@ public class weekFragment extends Fragment {
         OneDayDecorator oneDayDecorator;
         oneDayDecorator=new OneDayDecorator();
 
-
         weekCalender.addDecorators(oneDayDecorator);
 
         //오늘
         currentDay=new CalendarDay(CalendarDay.today().getYear(),CalendarDay.today().getMonth()+1,CalendarDay.today().getDay());
 
-        //수정해야함.(-3일)
+        //-3일
         currentShowFirstDay=new CalendarDay(CalendarDay.today().getYear(),CalendarDay.today().getMonth()+1,CalendarDay.today().getDay()-3);;
 
 
@@ -213,14 +207,13 @@ public class weekFragment extends Fragment {
         for (int nIdx = 0; nIdx < nEventNum; nIdx++) {
             String strDate = MainActivity.listCalender.get(nIdx).strDate;
             String strContent = MainActivity.listCalender.get(nIdx).strContent;
-
             String strCompareDate=TranslateCompareDate(date);
-
             if(strDate.equals(strCompareDate)){
                 adapter.addItem(new SingerItem(strContent));
             }
         }
         listVIew.setAdapter(adapter);
+
         //리스트 리프레쉬
         adapter.notifyDataSetChanged();
     }
@@ -243,7 +236,6 @@ public class weekFragment extends Fragment {
         weekCalender.setOnMonthChangedListener(new OnMonthChangedListener() {
             @Override
             public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
-                //date란 녀석이다.
                 currentShowFirstDay=new CalendarDay(date.getYear(),date.getMonth()+1,date.getDay());
 
             }
@@ -253,14 +245,27 @@ public class weekFragment extends Fragment {
         weekCalender.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-
                 CalendarDay d= new CalendarDay(date.getYear(),date.getMonth()+1,date.getDay());
                 LoadList(d);
-
             }
         });
 
     }
 
+    public void Init(){
+        //초기화
+        weekCalender=(MaterialCalendarView)getView().findViewById(R.id.monthCaleder);
+        listVIew=(ListView)getView().findViewById(R.id.weekListView);
+        adapter=new SingerAdapter(getContext());
+        registerForContextMenu(listVIew);
 
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        //super.onCreateContextMenu(menu, v, menuInfo);
+        getActivity().getMenuInflater().inflate(R.menu.menu_detail_event, menu);
+
+
+    }
 }

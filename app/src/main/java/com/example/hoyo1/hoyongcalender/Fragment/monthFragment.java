@@ -75,7 +75,7 @@ public class monthFragment extends Fragment {
 
 
     //선언
-    MaterialCalendarView monthCalender;
+    private MaterialCalendarView monthCalender;
 
 
 

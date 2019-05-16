@@ -22,6 +22,7 @@ import com.example.hoyo1.hoyongcalender.Fragment.monthFragment;
 import com.example.hoyo1.hoyongcalender.Fragment.weekFragment;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
+import java.sql.Date;
 import java.util.ArrayList;
 
 
@@ -227,12 +228,13 @@ public class MainActivity extends AppCompatActivity {
         else if(strParam.equals("week")) {
             selected = wFragment;
             wFragment.ProcessEvent();
-            wFragment.LoadList(CalendarDay.today());
+            CalendarDay today= new CalendarDay(CalendarDay.today().getYear(),CalendarDay.today().getMonth()+1,CalendarDay.today().getDay());
+            wFragment.LoadList(today);
         }
         else {
             selected = dFragment;
             dFragment.SetCalender();
-            String today=Integer.toString(CalendarDay.today().getYear())+"-"+Integer.toString(CalendarDay.today().getMonth())+"-"+Integer.toString(CalendarDay.today().getDay());
+            String today=Integer.toString(CalendarDay.today().getYear())+"-"+Integer.toString(CalendarDay.today().getMonth()+1)+"-"+Integer.toString(CalendarDay.today().getDay());
             dFragment.LoadList(today);
         }
     }

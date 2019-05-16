@@ -131,6 +131,17 @@ public class EventInfoActivity extends AppCompatActivity {
         Date dateTime=new Date(now);
         SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-YYYY");
         strDate=sdf.format(dateTime);
+
+        String[] Item=strDate.split("-");
+        if(Item[0].length()==2 && Item[0].charAt(0)=='0'){
+            Item[0]=String.valueOf(Item[0].charAt(1));
+        }
+        if(Item[1].length()==2 && Item[1].charAt(0)=='0'){
+            Item[1]=String.valueOf(Item[1].charAt(1));
+        }
+
+        strDate=Item[0]+"-"+Item[1]+"-"+Item[2];
+
     }
 
 

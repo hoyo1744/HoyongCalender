@@ -6,6 +6,7 @@
     <string name="menu_out">나가기</string>
     <string name="menu_add_event">일정추가하기</string>
     <string name="menu_check_event">일정보기</string>
-
+    <string name="menu_show_event">자세히보기</string>
+    <string name="menu_change_event">일정변경하기</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
