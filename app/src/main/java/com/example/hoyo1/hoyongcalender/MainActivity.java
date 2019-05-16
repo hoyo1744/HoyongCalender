@@ -233,7 +233,8 @@ public class MainActivity extends AppCompatActivity {
         else {
             selected = dFragment;
             dFragment.SetCalender();
-            dFragment.LoadList();
+            String today=Integer.toString(CalendarDay.today().getYear())+"-"+Integer.toString(CalendarDay.today().getMonth())+"-"+Integer.toString(CalendarDay.today().getDay());
+            dFragment.LoadList(today);
         }
 
 

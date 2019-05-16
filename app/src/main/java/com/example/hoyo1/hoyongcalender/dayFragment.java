@@ -14,6 +14,7 @@ import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
 
 import com.example.hoyo1.hoyongcalender.List.SingerAdapter;
+import com.example.hoyo1.hoyongcalender.List.SingerItem;
 import com.example.hoyo1.hoyongcalender.decorator.SaturdayDecorator;
 import com.example.hoyo1.hoyongcalender.decorator.SundayDecorator;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -104,14 +105,12 @@ public class dayFragment extends Fragment {
             if (v == FastBtn) {
                 CalculateFastDate();
                 GetDayOfWeek(selectedDate);
-                LoadList();
+                LoadList(selectedDate);
                 dayCalender.setText(dayOfWeek+","+selectedDate);
-
-
             } else if (v == FutureBtn) {
                 CalculateFutureDate();
                 GetDayOfWeek(selectedDate);
-                LoadList();
+                LoadList(selectedDate);
                 dayCalender.setText(dayOfWeek+","+selectedDate);
 
             }
@@ -138,7 +137,7 @@ public class dayFragment extends Fragment {
 
 
         //리스트로드
-        LoadList();
+        LoadList(selectedDate);
 
     }
 
@@ -297,11 +296,35 @@ public class dayFragment extends Fragment {
         }
     }
 
-    public void LoadList(){
+    public void LoadList(String date){
+        //리스트초기화
+        adapter.removeAll();
 
+
+
+
+        int nEventNum = MainActivity.listCalender.size();
+        for (int nIdx = 0; nIdx < nEventNum; nIdx++) {
+            String strDate = MainActivity.listCalender.get(nIdx).strDate;
+            String strContent = MainActivity.listCalender.get(nIdx).strContent;
+            String strCompareDate=TranslateCompareDate(date);
+            if(strDate.equals(strCompareDate)){
+                adapter.addItem(new SingerItem(strContent));
+            }
+        }
+        listVIew.setAdapter(adapter);
+        //리스트 리프레쉬
+        adapter.notifyDataSetChanged();
 
     }
 
-
+    public String TranslateCompareDate(String date){
+        String[] Item=date.split("-");
+        if(Item[1].charAt(0)=='0'){
+            Item[1]=String.valueOf(Item[1].charAt(1));
+        }
+        String strCompareDate=Item[2]+"-"+Item[1]+"-"+Item[0];
+        return strCompareDate;
+    }
 
 }
