@@ -28,4 +28,5 @@ public class SingerItemView extends LinearLayout {
     public void setContent(String strParam){
         textView.setText(strParam);
     }
+    public String getContent(){return textView.getText().toString();}
 }

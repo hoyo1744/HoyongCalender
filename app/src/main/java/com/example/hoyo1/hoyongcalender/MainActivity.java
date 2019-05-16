@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
     //요청메시지
     public static final int REQUEST_ADD_EVENT= 10000;
+    public static final int REQUEST_DETAIL_EVENT=10001;
 
     //디비이름
     private final String dbName="calender";

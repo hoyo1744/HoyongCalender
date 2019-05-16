@@ -1,20 +1,27 @@
 package com.example.hoyo1.hoyongcalender.Fragment;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.example.hoyo1.hoyongcalender.EventInfoActivity;
 import com.example.hoyo1.hoyongcalender.List.SingerAdapter;
 import com.example.hoyo1.hoyongcalender.List.SingerItem;
+import com.example.hoyo1.hoyongcalender.List.SingerItemView;
 import com.example.hoyo1.hoyongcalender.MainActivity;
 import com.example.hoyo1.hoyongcalender.R;
 import com.example.hoyo1.hoyongcalender.decorator.EventDayDecorator;
@@ -251,21 +258,51 @@ public class weekFragment extends Fragment {
         });
 
     }
-
     public void Init(){
         //초기화
         weekCalender=(MaterialCalendarView)getView().findViewById(R.id.monthCaleder);
         listVIew=(ListView)getView().findViewById(R.id.weekListView);
         adapter=new SingerAdapter(getContext());
         registerForContextMenu(listVIew);
-
     }
-
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         //super.onCreateContextMenu(menu, v, menuInfo);
         getActivity().getMenuInflater().inflate(R.menu.menu_detail_event, menu);
+    }
 
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+        try {
+            SingerItem singerItem = (SingerItem) adapter.getItem(info.position);
+            switch(item.getItemId()){
+                case R.id.itemShowEvent:
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+                    //대화상자설정
+                    builder.setTitle("자세히보기");
+                    builder.setMessage(singerItem.getContent());
+                    builder.setIcon(android.R.drawable.ic_dialog_info);
+
+
+                    //예 버튼 추가
+                    builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+
+                        }
+                    });
+
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                    return true;
+
+                default:
+                    return super.onContextItemSelected(item);
+            }
+        }catch(Exception e){
+            return super.onContextItemSelected(item);
+        }
 
     }
 }

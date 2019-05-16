@@ -26,7 +26,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".EventInfoActivity" />
-        <activity android:name=".List.SingerItemView"></activity>
+        <activity android:name=".List.SingerItemView" />
+        <activity android:name=".PopUpActivity"></activity>
     </application>
 
 </manifest>
