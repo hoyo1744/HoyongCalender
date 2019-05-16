@@ -48,6 +48,7 @@ public class SingerAdapter extends BaseAdapter {
         SingerItem item= items.get(position);
         view.setContent(item.getContent());
 
+
         return view;
     }
 

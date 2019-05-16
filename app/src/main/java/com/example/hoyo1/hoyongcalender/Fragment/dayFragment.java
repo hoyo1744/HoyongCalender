@@ -1,31 +1,26 @@
-package com.example.hoyo1.hoyongcalender;
+package com.example.hoyo1.hoyongcalender.Fragment;
 
-import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
 
+import com.example.hoyo1.hoyongcalender.EventInfoActivity;
 import com.example.hoyo1.hoyongcalender.List.SingerAdapter;
 import com.example.hoyo1.hoyongcalender.List.SingerItem;
-import com.example.hoyo1.hoyongcalender.decorator.SaturdayDecorator;
-import com.example.hoyo1.hoyongcalender.decorator.SundayDecorator;
+import com.example.hoyo1.hoyongcalender.MainActivity;
+import com.example.hoyo1.hoyongcalender.R;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
-import com.prolificinteractive.materialcalendarview.CalendarMode;
-import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
-
-import org.w3c.dom.Text;
 
 import java.sql.Date;
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -95,7 +90,6 @@ public class dayFragment extends Fragment {
     String dayOfWeek;
     ImageButton FastBtn;
     ImageButton FutureBtn;
-
 
 
 
@@ -306,6 +300,7 @@ public class dayFragment extends Fragment {
 
 
         int nEventNum = MainActivity.listCalender.size();
+
         for (int nIdx = 0; nIdx < nEventNum; nIdx++) {
             String strDate = MainActivity.listCalender.get(nIdx).strDate;
             String strContent = MainActivity.listCalender.get(nIdx).strContent;

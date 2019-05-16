@@ -5,10 +5,12 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.example.hoyo1.hoyongcalender.Common.AutoResizeTextView;
 import com.example.hoyo1.hoyongcalender.R;
 
 public class SingerItemView extends LinearLayout {
-    TextView textView;
+    AutoResizeTextView textView;
 
     public SingerItemView(Context context) {
         super(context);
@@ -20,7 +22,7 @@ public class SingerItemView extends LinearLayout {
         LayoutInflater inflater=(LayoutInflater)context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.singer_item,this,true);
 
-        textView=(TextView)findViewById(R.id.weekTextView);
+        textView=(AutoResizeTextView)findViewById(R.id.weekTextView);
     }
 
     public void setContent(String strParam){

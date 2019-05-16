@@ -10,24 +10,22 @@
 
 
     <TextView
-
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
         android:gravity="center"
         android:text="내 용"
         android:background="@color/colorPrimaryDark"
-        android:textSize="30dp"
+        android:textSize="25dp"
         android:textStyle="bold" />
 
-    <TextView
+
+    <com.example.hoyo1.hoyongcalender.Common.AutoResizeTextView
         android:id="@+id/weekTextView"
-        android:layout_marginLeft="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
         android:gravity="center"
-        android:textSize="30dp"
-        android:textAlignment="center"
-        android:text="sssssssssssssss"
+        android:textAlignment="viewStart"
         android:layout_gravity="center"
         android:textStyle="bold"
         />

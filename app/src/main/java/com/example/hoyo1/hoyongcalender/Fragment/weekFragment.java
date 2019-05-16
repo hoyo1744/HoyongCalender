@@ -1,33 +1,20 @@
-package com.example.hoyo1.hoyongcalender;
+package com.example.hoyo1.hoyongcalender.Fragment;
 
-import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.GridView;
 import android.widget.ListView;
-import android.widget.PopupMenu;
-import android.widget.Toast;
 
-import com.desai.vatsal.mydynamiccalendar.MyDynamicCalendar;
-import com.desai.vatsal.mydynamiccalendar.EventModel;
-import com.desai.vatsal.mydynamiccalendar.GetEventListListener;
-import com.desai.vatsal.mydynamiccalendar.OnDateClickListener;
-import com.desai.vatsal.mydynamiccalendar.OnEventClickListener;
-import com.desai.vatsal.mydynamiccalendar.OnWeekDayViewClickListener;
 import com.example.hoyo1.hoyongcalender.List.SingerAdapter;
 import com.example.hoyo1.hoyongcalender.List.SingerItem;
+import com.example.hoyo1.hoyongcalender.MainActivity;
+import com.example.hoyo1.hoyongcalender.R;
 import com.example.hoyo1.hoyongcalender.decorator.EventDayDecorator;
 import com.example.hoyo1.hoyongcalender.decorator.OneDayDecorator;
 import com.example.hoyo1.hoyongcalender.decorator.SaturdayDecorator;
@@ -38,12 +25,7 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import android.view.Menu;
-import android.view.MenuItem;
 
 
 /**
@@ -204,7 +186,7 @@ public class weekFragment extends Fragment {
     }
 
     public void ProcessEvent(){
-        int nEventNum=MainActivity.listCalender.size();
+        int nEventNum= MainActivity.listCalender.size();
 
         for(int nIdx=0;nIdx<nEventNum;nIdx++){
             String strID=MainActivity.listCalender.get(nIdx).strID;

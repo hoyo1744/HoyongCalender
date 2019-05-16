@@ -1,6 +1,5 @@
 package com.example.hoyo1.hoyongcalender;
 
-import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -16,21 +15,25 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.hoyo1.hoyongcalender.DatabaseAgent.DatabaseHandler;
+import com.example.hoyo1.hoyongcalender.DatabaseAgent.DatabaseHelper;
+import com.example.hoyo1.hoyongcalender.Fragment.dayFragment;
+import com.example.hoyo1.hoyongcalender.Fragment.monthFragment;
+import com.example.hoyo1.hoyongcalender.Fragment.weekFragment;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 
 public class MainActivity extends AppCompatActivity {
 
     //캘린더정보 자료형
     public class CalenderInfo{
-        String strID;
-        String strDate;
-        String strStartTime;
-        String strEndTime;
-        String strContent;
+        public String strID;
+        public String strDate;
+        public String strStartTime;
+        public String strEndTime;
+        public String strContent;
 
         public void setID(String strParam){
             this.strID=strParam;
@@ -78,8 +81,8 @@ public class MainActivity extends AppCompatActivity {
     private boolean bIsDatabaseOpen;
     private DatabaseHandler dbHandler;
     private monthFragment mFragment;
-    private weekFragment  wFragment;
-    private dayFragment   dFragment;
+    private weekFragment wFragment;
+    private dayFragment dFragment;
     private DatabaseHelper dbHelper;
     public static String strParam;
     private SQLiteDatabase db;
@@ -232,14 +235,6 @@ public class MainActivity extends AppCompatActivity {
             String today=Integer.toString(CalendarDay.today().getYear())+"-"+Integer.toString(CalendarDay.today().getMonth())+"-"+Integer.toString(CalendarDay.today().getDay());
             dFragment.LoadList(today);
         }
-
-
-        //사실 의미 없었다.
-        FragmentManager fragmentManager=getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.container,selected).commit();
-
-
     }
 
     public void InitialOpenFragment(int position){

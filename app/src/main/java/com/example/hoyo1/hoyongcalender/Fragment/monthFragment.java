@@ -1,4 +1,4 @@
-package com.example.hoyo1.hoyongcalender;
+package com.example.hoyo1.hoyongcalender.Fragment;
 
 import android.graphics.Color;
 import android.net.Uri;
@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
+import com.example.hoyo1.hoyongcalender.MainActivity;
+import com.example.hoyo1.hoyongcalender.R;
 import com.example.hoyo1.hoyongcalender.decorator.EventDayDecorator;
 import com.example.hoyo1.hoyongcalender.decorator.OneDayDecorator;
 import com.example.hoyo1.hoyongcalender.decorator.SaturdayDecorator;
@@ -18,7 +20,6 @@ import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
@@ -153,7 +154,7 @@ public class monthFragment extends Fragment {
     }
     public void ProcessEvent(){
 
-        int nEventNum=MainActivity.listCalender.size();
+        int nEventNum= MainActivity.listCalender.size();
 
         for(int nIdx=0;nIdx<nEventNum;nIdx++){
             String strID=MainActivity.listCalender.get(nIdx).strID;
