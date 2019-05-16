@@ -8,7 +8,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.SimpleExpandableListAdapter;
+import android.widget.TextView;
 
 import com.example.hoyo1.hoyongcalender.List.SingerAdapter;
 import com.example.hoyo1.hoyongcalender.decorator.SaturdayDecorator;
@@ -17,6 +20,12 @@ import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
+import org.w3c.dom.Text;
+
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 
@@ -72,12 +81,42 @@ public class dayFragment extends Fragment {
     }
 
     //선언
-    MaterialCalendarView dayCalender;
-    CalendarDay currentShowFirstDay;
-    CalendarDay currentDay;
     SingerAdapter adapter;
+    TextView dayCalender;
+    String selectedDate;
+    String selectedYear;
+    String selectedMonth;
+    String selectedDay;
+    String currentMonth;
+    String currentYear;
+    String currentDay;
     ListView listVIew;
+    String dayOfWeek;
+    ImageButton FastBtn;
+    ImageButton FutureBtn;
 
+
+
+
+    private final View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (v == FastBtn) {
+                CalculateFastDate();
+                GetDayOfWeek(selectedDate);
+                LoadList();
+                dayCalender.setText(dayOfWeek+","+selectedDate);
+
+
+            } else if (v == FutureBtn) {
+                CalculateFutureDate();
+                GetDayOfWeek(selectedDate);
+                LoadList();
+                dayCalender.setText(dayOfWeek+","+selectedDate);
+
+            }
+        }
+    };
 
 
     @Override
@@ -85,13 +124,21 @@ public class dayFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         //초기화
-        dayCalender=(MaterialCalendarView)getView().findViewById(R.id.dayCalender);
         listVIew=(ListView)getView().findViewById(R.id.dayListView);
+        dayCalender=(TextView)getView().findViewById(R.id.dayCalender);
         adapter=new SingerAdapter(getContext());
+        FastBtn=(ImageButton)getView().findViewById(R.id.previous);
+        FutureBtn=(ImageButton)getView().findViewById(R.id.next);
+
+        FutureBtn.setOnClickListener(onClickListener);
+        FastBtn.setOnClickListener(onClickListener);
 
         //캘린더 세팅
         SetCalender();
 
+
+        //리스트로드
+        LoadList();
 
     }
 
@@ -142,14 +189,119 @@ public class dayFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    public void SetCalender(){
-        dayCalender.state().edit()
-                .setFirstDayOfWeek(Calendar.SUNDAY)
-                .setMinimumDate(CalendarDay.from(2019, 3, 17))
-                .setMaximumDate(CalendarDay.from(2019, 5, 15))
-                .setCalendarDisplayMode(CalendarMode.WEEKS).commit();
+    public void SetCalender() {
+
+        //오늘날짜설정
+        currentYear= Integer.toString(CalendarDay.today().getYear());
+        currentMonth=Integer.toString(CalendarDay.today().getMonth()+1);
+        currentDay=Integer.toString(CalendarDay.today().getDay());
+
+        if(currentMonth.length()==1){
+            currentMonth="0"+currentMonth;
+        }
+        if(currentDay.length()==1){
+            currentDay="0"+currentDay;
+        }
+
+        //오늘요일설정
+        String date=currentYear+"-"+currentMonth+"-"+currentDay;
+        GetDayOfWeek(date);
 
 
-        dayCalender.addDecorators(new SundayDecorator(),new SaturdayDecorator());
+
+        //선택된 날짜설정
+        selectedYear=currentYear;
+        selectedMonth=currentMonth;
+        selectedDay=currentDay;
+        selectedDate=currentYear+"-"+currentMonth+"-"+currentDay;
+
+
+        //캘린더설정
+        dayCalender.setText(dayOfWeek+","+selectedDate);
+
+
     }
+
+    public void CalculateFastDate(){
+        //선택된날짜변경
+        Calendar cal = Calendar.getInstance();
+
+        Date date =Date.valueOf(selectedDate);
+        cal.setTime(date);
+        cal.add(Calendar.DATE, -1);
+
+        SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
+        String temp=dateFormat.format(cal.getTime());
+
+        String[] item=temp.split("-");
+
+
+
+
+        selectedYear=item[0];
+        selectedMonth=item[1];
+        selectedDay=item[2];
+        selectedDate=selectedYear+"-"+selectedMonth+"-"+selectedDay;
+
+
+    }
+    public void CalculateFutureDate(){
+        //선택된날짜변경
+        Calendar cal = Calendar.getInstance();
+
+        Date date =Date.valueOf(selectedDate);
+        cal.setTime(date);
+        cal.add(Calendar.DATE, 1);
+
+        SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
+        String temp=dateFormat.format(cal.getTime());
+
+        String[] item=temp.split("-");
+
+        selectedYear=item[0];
+        selectedMonth=item[1];
+        selectedDay=item[2];
+        selectedDate=selectedYear+"-"+selectedMonth+"-"+selectedDay;
+
+
+    }
+    public void GetDayOfWeek(String source) {
+
+
+        Date date=Date.valueOf(source);
+        Calendar cal=Calendar.getInstance();
+        cal.setTime(date);
+        int dayNum=cal.get(Calendar.DAY_OF_WEEK);
+        switch(dayNum){
+            case 1:
+                dayOfWeek="Sun";
+                break;
+            case 2:
+                dayOfWeek="Mon";
+                break;
+            case 3:
+                dayOfWeek="Tue";
+                break;
+            case 4:
+                dayOfWeek="Wed";
+                break;
+            case 5:
+                dayOfWeek="Thu";
+                break;
+            case 6:
+                dayOfWeek="Fri";
+                break;
+            case 7:
+                dayOfWeek="Sat";
+                break;
+        }
+    }
+
+    public void LoadList(){
+
+
+    }
+
+
+
 }

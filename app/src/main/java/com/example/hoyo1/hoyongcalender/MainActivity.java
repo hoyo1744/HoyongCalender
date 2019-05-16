@@ -232,6 +232,8 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             selected = dFragment;
+            dFragment.SetCalender();
+            dFragment.LoadList();
         }
 
 
