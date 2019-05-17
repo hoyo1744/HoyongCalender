@@ -44,9 +44,9 @@ import java.util.Calendar;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link weekFragment.OnFragmentInteractionListener} interface
+ * {@link weekGridFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link weekFragment#newInstance} factory method to
+ * Use the {@link weekGridFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class weekGridFragment extends Fragment {
@@ -74,8 +74,8 @@ public class weekGridFragment extends Fragment {
      * @return A new instance of fragment weekFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static weekFragment newInstance(String param1, String param2) {
-        weekFragment fragment = new weekFragment();
+    public static weekGridFragment newInstance(String param1, String param2) {
+        weekGridFragment fragment = new weekGridFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -131,7 +131,7 @@ public class weekGridFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_week, container, false);
+        return inflater.inflate(R.layout.fragment_week_grid, container, false);
 
     }
 
@@ -288,8 +288,8 @@ public class weekGridFragment extends Fragment {
     }
     public void Init(){
         //초기화
-        weekCalender=(MaterialCalendarView)getView().findViewById(R.id.weekCaleder);
-        gridView=(GridView)getView().findViewById(R.id.weekGridView);
+        weekCalender=(MaterialCalendarView)getView().findViewById(R.id.weekGridCaleder);
+        gridView=(GridView) getView().findViewById(R.id.weekGridView);
         gridAdapter=new GridAdapter(getContext());
         adapter=new SingerAdapter(getContext());
         registerForContextMenu(gridView);
@@ -305,7 +305,7 @@ public class weekGridFragment extends Fragment {
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
         try {
-            GridSingerItem singerItem = (GridSingerItem) adapter.getItem(info.position);
+            GridSingerItem singerItem = (GridSingerItem) gridAdapter.getItem(info.position);
             switch(item.getItemId()){
                 case R.id.itemShowEvent:
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -348,7 +348,6 @@ public class weekGridFragment extends Fragment {
         int diffDay=8-day;
         result=new CalendarDay(today.getYear(),today.getMonth()+1,today.getDay()+diffDay);
         return result;
-
     }
 
 }
