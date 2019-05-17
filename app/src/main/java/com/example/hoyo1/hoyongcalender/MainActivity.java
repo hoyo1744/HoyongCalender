@@ -245,6 +245,7 @@ public class MainActivity extends AppCompatActivity {
             wFragment.LoadGrid();
 
 
+
         }
         else {
             selected = dFragment;

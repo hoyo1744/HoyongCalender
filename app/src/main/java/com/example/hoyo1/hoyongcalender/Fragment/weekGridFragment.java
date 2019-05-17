@@ -128,6 +128,8 @@ public class weekGridFragment extends Fragment {
 
         //그리드뷰
         LoadGrid();
+
+        gridView.setAdapter(gridAdapter);
     }
 
     @Override
@@ -257,7 +259,9 @@ public class weekGridFragment extends Fragment {
             day=new CalendarDay(day.getYear(),day.getMonth(),day.getDay()+1);
         }
 
-        gridView.setAdapter(gridAdapter);
+
+
+        gridAdapter.notifyDataSetChanged();
     }
 
     public String TranslateCompareDate(CalendarDay date){
