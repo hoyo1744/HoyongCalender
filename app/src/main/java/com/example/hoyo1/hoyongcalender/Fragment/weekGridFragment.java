@@ -124,7 +124,7 @@ public class weekGridFragment extends Fragment {
         ProcessEvent();
 
         //그리드헤더설정
-//        SetGridHeader();
+        SetGridHeader();
 
         //그리드뷰
         LoadGrid();
@@ -253,7 +253,7 @@ public class weekGridFragment extends Fragment {
                 }
             }
             if(bIsExist==false)
-                gridAdapter.addItem(new GridSingerItem(strContent, GridAdapter.ITEM_VIEW_EMPTY));
+                gridAdapter.addItem(new GridSingerItem("", GridAdapter.ITEM_VIEW_EMPTY));
             day=new CalendarDay(day.getYear(),day.getMonth(),day.getDay()+1);
         }
 
@@ -309,7 +309,7 @@ public class weekGridFragment extends Fragment {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
         try {
             // 헤더라이브러리때문에 기본적인으로 7이 추가된다.
-            int pos=info.position;
+            int pos=info.position-7;
             GridSingerItem singerItem = (GridSingerItem) gridAdapter.getItem(pos);
             switch(item.getItemId()){
                 case R.id.itemShowEvent:
