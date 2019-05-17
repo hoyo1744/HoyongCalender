@@ -40,6 +40,8 @@ import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import in.srain.cube.views.GridViewWithHeaderAndFooter;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -100,7 +102,7 @@ public class weekGridFragment extends Fragment {
     private GridAdapter gridAdapter;
     private CalendarDay currentDay;
     private SingerAdapter adapter;
-    private GridView gridView;
+    private GridViewWithHeaderAndFooter gridView;
 
 
 
@@ -121,7 +123,8 @@ public class weekGridFragment extends Fragment {
         //이벤트처리
         ProcessEvent();
 
-        //리스트헤더설정
+        //그리드헤더설정
+//        SetGridHeader();
 
         //그리드뷰
         LoadGrid();
@@ -289,7 +292,7 @@ public class weekGridFragment extends Fragment {
     public void Init(){
         //초기화
         weekCalender=(MaterialCalendarView)getView().findViewById(R.id.weekGridCaleder);
-        gridView=(GridView) getView().findViewById(R.id.weekGridView);
+        gridView=(GridViewWithHeaderAndFooter ) getView().findViewById(R.id.weekGridView);
         gridAdapter=new GridAdapter(getContext());
         adapter=new SingerAdapter(getContext());
         registerForContextMenu(gridView);
@@ -305,7 +308,9 @@ public class weekGridFragment extends Fragment {
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
         try {
-            GridSingerItem singerItem = (GridSingerItem) gridAdapter.getItem(info.position);
+            // 헤더라이브러리때문에 기본적인으로 7이 추가된다.
+            int pos=info.position;
+            GridSingerItem singerItem = (GridSingerItem) gridAdapter.getItem(pos);
             switch(item.getItemId()){
                 case R.id.itemShowEvent:
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -348,6 +353,10 @@ public class weekGridFragment extends Fragment {
         int diffDay=8-day;
         result=new CalendarDay(today.getYear(),today.getMonth()+1,today.getDay()+diffDay);
         return result;
+    }
+    public void SetGridHeader(){
+        View header = getLayoutInflater().inflate(R.layout.grid_head, null, false);
+        gridView.addHeaderView(header);
     }
 
 }

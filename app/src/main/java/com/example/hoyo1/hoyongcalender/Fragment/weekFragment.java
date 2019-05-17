@@ -97,7 +97,6 @@ public class weekFragment extends Fragment {
     private MaterialCalendarView weekCalender;
     private CalendarDay currentShowFirstDay;
     private CalendarDay currentShowLastDay;
-    private GridAdapter gridAdapter;
     private CalendarDay currentDay;
     private SingerAdapter adapter;
     private ListView listVIew;
@@ -269,7 +268,6 @@ public class weekFragment extends Fragment {
         //초기화
         weekCalender=(MaterialCalendarView)getView().findViewById(R.id.weekCaleder);
         listVIew=(ListView)getView().findViewById(R.id.weekListView);
-        gridAdapter=new GridAdapter(getContext());
         adapter=new SingerAdapter(getContext());
         registerForContextMenu(listVIew);
 
@@ -277,15 +275,29 @@ public class weekFragment extends Fragment {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         //super.onCreateContextMenu(menu, v, menuInfo);
+
+
+        //헤드예외
+        AdapterView.AdapterContextMenuInfo info=(AdapterView.AdapterContextMenuInfo)menuInfo;
+        int pos=info.position;
+        if(pos==0)
+            return ;
+
         getActivity().getMenuInflater().inflate(R.menu.menu_detail_event, menu);
+
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+        int pos=info.position;
+
+        //헤드 예외처리
+        if(pos==0)
+            return super.onContextItemSelected(item);
         try {
-            SingerItem singerItem = (SingerItem) adapter.getItem(info.position);
-            switch(item.getItemId()){
+            SingerItem singerItem = (SingerItem) adapter.getItem(pos-1);
+            switch (item.getItemId()) {
                 case R.id.itemShowEvent:
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
@@ -311,6 +323,7 @@ public class weekFragment extends Fragment {
         }catch(Exception e){
             return super.onContextItemSelected(item);
         }
+
     }
     public CalendarDay GetFirstDayOfWeek(CalendarDay today){
         CalendarDay result;

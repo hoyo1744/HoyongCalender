@@ -21,14 +21,14 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <GridView
+        <in.srain.cube.views.GridViewWithHeaderAndFooter
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/weekGridView"
             android:layout_gravity="center"
             android:stretchMode="columnWidth"
             android:numColumns="7">
-        </GridView>
+        </in.srain.cube.views.GridViewWithHeaderAndFooter>
 
 
     </LinearLayout>

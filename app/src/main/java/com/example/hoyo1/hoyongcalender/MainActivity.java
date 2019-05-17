@@ -84,8 +84,8 @@ public class MainActivity extends AppCompatActivity {
     private boolean bIsDatabaseOpen;
     private DatabaseHandler dbHandler;
     private monthFragment mFragment;
-    private weekGridFragment wFragment;
-    //private weekFragment wFragment;
+    //private weekGridFragment wFragment;
+    private weekFragment wFragment;
     private dayFragment dFragment;
     private DatabaseHelper dbHelper;
     public static String strParam;
@@ -153,8 +153,8 @@ public class MainActivity extends AppCompatActivity {
         toolbar=(Toolbar)findViewById(R.id.toolbar);
         listCalender=new ArrayList<CalenderInfo>();
         mFragment=new monthFragment();
-        //wFragment=new weekFragment();
-        wFragment=new weekGridFragment();
+        wFragment=new weekFragment();
+        //wFragment=new weekGridFragment();
         dFragment=new dayFragment();
         bIsDatabaseOpen=false;
 
@@ -231,16 +231,17 @@ public class MainActivity extends AppCompatActivity {
         }
         else if(strParam.equals("week")) {
             selected = wFragment;
-            /*
-            리스트버전
+
+            //리스트버전
             wFragment.ProcessEvent();
             CalendarDay today= new CalendarDay(CalendarDay.today().getYear(),CalendarDay.today().getMonth()+1,CalendarDay.today().getDay());
             wFragment.LoadList(today);
-            */
 
+            /*
             //그리드버전
             wFragment.ProcessEvent();
             wFragment.LoadGrid();
+            */
 
         }
         else {

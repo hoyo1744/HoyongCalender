@@ -29,4 +29,5 @@ dependencies {
     implementation 'com.android.support:design:27.1.0'
     implementation 'com.github.vatsaldesai92:MyDynamicCalendarLibrary:1.0.1'
     implementation 'com.prolificinteractive:material-calendarview:1.4.3'
+    implementation 'in.srain.cube:grid-view-with-header-footer:1.0.12'
 }
