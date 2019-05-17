@@ -49,7 +49,7 @@ import java.util.Calendar;
  * Use the {@link weekFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class weekFragment extends Fragment {
+public class weekGridFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -61,7 +61,7 @@ public class weekFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public weekFragment() {
+    public weekGridFragment() {
         // Required empty public constructor
     }
 
@@ -100,7 +100,8 @@ public class weekFragment extends Fragment {
     private GridAdapter gridAdapter;
     private CalendarDay currentDay;
     private SingerAdapter adapter;
-    private ListView listVIew;
+    private GridView gridView;
+
 
 
 
@@ -121,11 +122,9 @@ public class weekFragment extends Fragment {
         ProcessEvent();
 
         //리스트헤더설정
-        SetListHeader();
 
-        //리스트뷰
-        LoadList(currentDay);
-
+        //그리드뷰
+        LoadGrid();
     }
 
     @Override
@@ -212,30 +211,52 @@ public class weekFragment extends Fragment {
             weekCalender.addDecorators(eventDayDecorator);
         }
     }
-    public void LoadList(CalendarDay date) {
-        //리스트초기화
-        adapter.removeAll();
-
-        int nEventNum = MainActivity.listCalender.size();
 
 
-        for (int nIdx = 0; nIdx < nEventNum; nIdx++) {
-            String strDate = MainActivity.listCalender.get(nIdx).strDate;
-            String strContent = MainActivity.listCalender.get(nIdx).strContent;
-            String strCompareDate=TranslateCompareDate(date);
-            if(strDate.equals(strCompareDate)){
-                adapter.addItem(new SingerItem(strContent));
+    public void LoadGrid(){
+        gridAdapter.removeAll();
+
+
+        ArrayList<MainActivity.CalenderInfo> listTemp=new ArrayList<MainActivity.CalenderInfo>();
+        listTemp.addAll(MainActivity.listCalender);
+
+
+        CalendarDay day=currentShowFirstDay;
+        boolean bIsExistForWeekAtLeast=false;
+        while(true){
+            int nEventNum =listTemp.size();
+            boolean bIsExist=false;
+            String strDate="";
+            String strContent="";
+            String strCompareDate="";
+
+            if(day.equals(currentShowLastDay) && bIsExistForWeekAtLeast==false) {
+                break;
             }
+            if(day.equals(currentShowLastDay) && bIsExistForWeekAtLeast==true){
+                bIsExistForWeekAtLeast=false;
+                day=currentShowFirstDay;
+            }
+            for(int nIdx=0;nIdx<nEventNum;nIdx++){
+                strDate=listTemp.get(nIdx).strDate;
+                strContent=listTemp.get(nIdx).strContent;
+                strCompareDate=TranslateCompareDate(day);
+                if(strDate.equals(strCompareDate)) {
+                    gridAdapter.addItem(new GridSingerItem(strContent, GridAdapter.ITEM_VIEW_TEXT));
+                    listTemp.remove(nIdx);
+                    bIsExist = true;
+                    bIsExistForWeekAtLeast=true;
+                    break;
+                }
+            }
+            if(bIsExist==false)
+                gridAdapter.addItem(new GridSingerItem(strContent, GridAdapter.ITEM_VIEW_EMPTY));
+            day=new CalendarDay(day.getYear(),day.getMonth(),day.getDay()+1);
         }
-        listVIew.setAdapter(adapter);
 
-        //리스트 리프레쉬
-        adapter.notifyDataSetChanged();
+        gridView.setAdapter(gridAdapter);
     }
-    public void SetListHeader(){
-        View header = getLayoutInflater().inflate(R.layout.list_head, null, false);
-        listVIew.addHeaderView(header);
-    }
+
     public String TranslateCompareDate(CalendarDay date){
         String strCompareDate=Integer.toString(date.getDay())+"-"+Integer.toString(date.getMonth())+"-"+Integer.toString(date.getYear());
         return strCompareDate;
@@ -253,6 +274,7 @@ public class weekFragment extends Fragment {
             public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
                 currentShowFirstDay=new CalendarDay(date.getYear(),date.getMonth()+1,date.getDay());
                 currentShowLastDay=new CalendarDay(date.getYear(),date.getMonth()+1,date.getDay()+7);
+                LoadGrid();
             }
         });
 
@@ -260,18 +282,17 @@ public class weekFragment extends Fragment {
         weekCalender.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-                CalendarDay d= new CalendarDay(date.getYear(),date.getMonth()+1,date.getDay());
-                LoadList(d);
+
             }
         });
     }
     public void Init(){
         //초기화
         weekCalender=(MaterialCalendarView)getView().findViewById(R.id.weekCaleder);
-        listVIew=(ListView)getView().findViewById(R.id.weekListView);
+        gridView=(GridView)getView().findViewById(R.id.weekGridView);
         gridAdapter=new GridAdapter(getContext());
         adapter=new SingerAdapter(getContext());
-        registerForContextMenu(listVIew);
+        registerForContextMenu(gridView);
 
     }
     @Override
@@ -284,7 +305,7 @@ public class weekFragment extends Fragment {
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
         try {
-            SingerItem singerItem = (SingerItem) adapter.getItem(info.position);
+            GridSingerItem singerItem = (GridSingerItem) adapter.getItem(info.position);
             switch(item.getItemId()){
                 case R.id.itemShowEvent:
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -327,6 +348,7 @@ public class weekFragment extends Fragment {
         int diffDay=8-day;
         result=new CalendarDay(today.getYear(),today.getMonth()+1,today.getDay()+diffDay);
         return result;
+
     }
 
 }

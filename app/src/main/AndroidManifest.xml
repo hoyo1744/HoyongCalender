@@ -27,6 +27,8 @@
         </activity>
         <activity android:name=".EventInfoActivity" />
         <activity android:name=".List.SingerItemView" />
+        <activity android:name=".Grid.GridTextView" />
+        <activity android:name=".Grid.GridEmptyView"></activity>
     </application>
 
 </manifest>

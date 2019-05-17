@@ -8,8 +8,10 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -336,6 +338,39 @@ public class dayFragment extends Fragment {
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         //super.onCreateContextMenu(menu, v, menuInfo);
         getActivity().getMenuInflater().inflate(R.menu.menu_detail_event, menu);
+    }
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+        try {
+            SingerItem singerItem = (SingerItem) adapter.getItem(info.position);
+            switch(item.getItemId()){
+                case R.id.itemShowEvent:
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+                    //대화상자설정
+                    builder.setTitle("자세히보기");
+                    builder.setMessage(singerItem.getContent());
+                    builder.setIcon(android.R.drawable.ic_dialog_info);
+
+
+                    //예 버튼 추가
+                    builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+
+                        }
+                    });
+
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                    return true;
+                default:
+                    return super.onContextItemSelected(item);
+            }
+        }catch(Exception e){
+            return super.onContextItemSelected(item);
+        }
+
     }
 
 }
