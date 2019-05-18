@@ -17,6 +17,9 @@ public class SingerItemView extends LinearLayout {
         Init(context);
     }
 
+    public SingerItemView(){
+        super(null);
+    }
     public void Init(Context context){
         //getSystemService함수를 통해서 인플레이터객체를 반환
         LayoutInflater inflater=(LayoutInflater)context.getSystemService(context.LAYOUT_INFLATER_SERVICE);

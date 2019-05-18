@@ -21,6 +21,7 @@ public class GridAdapter extends BaseAdapter {
     public GridAdapter(Context context){
         adapterContext=context;
     }
+    public GridAdapter(){}
 
 
     public void removeAll(){
