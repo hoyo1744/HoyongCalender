@@ -4,9 +4,6 @@
         android:id="@+id/itemShowEvent"
         android:title="@string/menu_show_event"
         />
-    <item
-        android:id="@+id/itemChangeEvent"
-        android:title="@string/menu_change_event"
-        />
+
 
 </menu>

@@ -18,7 +18,6 @@ public class Splashscreen extends Activity {
         Window window = getWindow();
         window.setFormat(PixelFormat.RGBA_8888);
     }
-
     Thread splashTread;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,6 +58,6 @@ public class Splashscreen extends Activity {
                 }
             }
         }, 1300);
-        
+
     }
 }

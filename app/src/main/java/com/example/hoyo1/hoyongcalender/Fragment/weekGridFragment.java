@@ -96,6 +96,7 @@ public class weekGridFragment extends Fragment {
 
 
     //변수선언
+    private final int GRID_NUMS=7;
     private MaterialCalendarView weekCalender;
     private CalendarDay currentShowFirstDay;
     private CalendarDay currentShowLastDay;
@@ -305,7 +306,15 @@ public class weekGridFragment extends Fragment {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         //super.onCreateContextMenu(menu, v, menuInfo);
+        AdapterView.AdapterContextMenuInfo info=(AdapterView.AdapterContextMenuInfo)menuInfo;
+
+        //헤드예외
+        int pos=info.position;
+        if(pos==0)
+            return ;
+
         getActivity().getMenuInflater().inflate(R.menu.menu_detail_event, menu);
+
     }
 
     @Override
@@ -313,7 +322,13 @@ public class weekGridFragment extends Fragment {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
         try {
             // 헤더라이브러리때문에 기본적인으로 7이 추가된다.
-            int pos=info.position-7;
+            int pos=info.position;
+
+            //헤드 예외처리
+            if(pos==0)
+                return super.onContextItemSelected(item);
+
+            pos-=GRID_NUMS;
             GridSingerItem singerItem = (GridSingerItem) gridAdapter.getItem(pos);
             switch(item.getItemId()){
                 case R.id.itemShowEvent:
