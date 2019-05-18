@@ -250,7 +250,6 @@ public class MainActivity extends AppCompatActivity {
             wFragment.LoadList(today);
             */
 
-
             //그리드버전
             wFragment.ProcessEvent();
             wFragment.LoadGrid();
@@ -262,6 +261,7 @@ public class MainActivity extends AppCompatActivity {
             String today=Integer.toString(CalendarDay.today().getYear())+"-"+Integer.toString(CalendarDay.today().getMonth()+1)+"-"+Integer.toString(CalendarDay.today().getDay());
             dFragment.LoadList(today);
         }
+
     }
 
     public void InitialOpenFragment(int position){

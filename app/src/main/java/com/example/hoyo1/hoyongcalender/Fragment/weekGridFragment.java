@@ -130,7 +130,6 @@ public class weekGridFragment extends Fragment {
         //그리드뷰
         LoadGrid();
 
-        gridView.setAdapter(gridAdapter);
     }
 
     @Override
@@ -222,6 +221,51 @@ public class weekGridFragment extends Fragment {
     public void LoadGrid(){
         gridAdapter.removeAll();
 
+        ArrayList<MainActivity.CalenderInfo> listTemp=new ArrayList<MainActivity.CalenderInfo>();
+        listTemp.addAll(MainActivity.listCalender);
+
+
+        CalendarDay day=currentShowFirstDay;
+        boolean bIsExistForWeekAtLeast=false;
+        while(true){
+            int nEventNum =listTemp.size();
+            boolean bIsExist=false;
+            String strDate="";
+            String strContent="";
+            String strCompareDate="";
+
+            if(day.equals(currentShowLastDay) && bIsExistForWeekAtLeast==false) {
+                break;
+            }
+            if(day.equals(currentShowLastDay) && bIsExistForWeekAtLeast==true){
+                bIsExistForWeekAtLeast=false;
+                day=currentShowFirstDay;
+            }
+            for(int nIdx=0;nIdx<nEventNum;nIdx++){
+                strDate=listTemp.get(nIdx).strDate;
+                strContent=listTemp.get(nIdx).strContent;
+                strCompareDate=TranslateCompareDate(day);
+                if(strDate.equals(strCompareDate)) {
+                    gridAdapter.addItem(new GridSingerItem(strContent, GridAdapter.ITEM_VIEW_TEXT));
+                    listTemp.remove(nIdx);
+                    bIsExist = true;
+                    bIsExistForWeekAtLeast=true;
+                    break;
+                }
+            }
+            if(bIsExist==false)
+                gridAdapter.addItem(new GridSingerItem("", GridAdapter.ITEM_VIEW_EMPTY));
+            day=new CalendarDay(day.getYear(),day.getMonth(),day.getDay()+1);
+        }
+
+        gridView.setAdapter(gridAdapter);
+        gridAdapter.notifyDataSetChanged();
+
+
+
+    }
+    public void LoadGridNoSetAdapter(){
+        gridAdapter.removeAll();
 
         ArrayList<MainActivity.CalenderInfo> listTemp=new ArrayList<MainActivity.CalenderInfo>();
         listTemp.addAll(MainActivity.listCalender);
@@ -260,9 +304,10 @@ public class weekGridFragment extends Fragment {
             day=new CalendarDay(day.getYear(),day.getMonth(),day.getDay()+1);
         }
 
-
-
         gridAdapter.notifyDataSetChanged();
+
+
+
     }
 
     public String TranslateCompareDate(CalendarDay date){
@@ -278,12 +323,17 @@ public class weekGridFragment extends Fragment {
 
         //달변경
         weekCalender.setOnMonthChangedListener(new OnMonthChangedListener() {
+
+
             @Override
             public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
                 currentShowFirstDay=new CalendarDay(date.getYear(),date.getMonth()+1,date.getDay());
                 currentShowLastDay=new CalendarDay(date.getYear(),date.getMonth()+1,date.getDay()+7);
-                LoadGrid();
+                LoadGridNoSetAdapter();
             }
+
+
+
         });
 
         //날짜선택
@@ -299,7 +349,6 @@ public class weekGridFragment extends Fragment {
         weekCalender=(MaterialCalendarView)getView().findViewById(R.id.weekGridCaleder);
         gridView=(GridViewWithHeaderAndFooter ) getView().findViewById(R.id.weekGridView);
         gridAdapter=new GridAdapter(getContext());
-        adapter=new SingerAdapter(getContext());
         registerForContextMenu(gridView);
 
     }
