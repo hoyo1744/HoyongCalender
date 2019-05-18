@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -340,6 +341,10 @@ public class weekFragment extends Fragment {
         int diffDay=8-day;
         result=new CalendarDay(today.getYear(),today.getMonth()+1,today.getDay()+diffDay);
         return result;
+    }
+    public void ReFresh(){
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.detach(this).attach(this).commit();
     }
 
 }

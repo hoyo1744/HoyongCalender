@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
+import java.sql.Date;
 import java.util.Calendar;
 
 /**
@@ -86,6 +88,7 @@ public class monthFragment extends Fragment {
         //초기화
         monthCalender=(MaterialCalendarView)getView().findViewById(R.id.monthCaleder);
 
+
         //캘린더옵션세팅
         SetCalender();
 
@@ -94,6 +97,8 @@ public class monthFragment extends Fragment {
 
         //이벤트설정
         ProcessEvent();
+
+
     }
 
 
@@ -178,9 +183,15 @@ public class monthFragment extends Fragment {
                 .setFirstDayOfWeek(Calendar.SUNDAY)
                 .setCalendarDisplayMode(CalendarMode.MONTHS).commit();
 
+
         monthCalender.addDecorators(new SundayDecorator(),new SaturdayDecorator());
+
     }
 
+    public void ReFresh(){
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.detach(this).attach(this).commit();
+    }
 
 
 }

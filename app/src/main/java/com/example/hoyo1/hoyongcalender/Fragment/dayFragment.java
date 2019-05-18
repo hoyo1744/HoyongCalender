@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -82,10 +83,10 @@ public class dayFragment extends Fragment {
     //선언
     private SingerAdapter adapter;
     private TextView dayCalender;
-    private String selectedDate;
-    private String selectedYear;
-    private String selectedMonth;
-    private String selectedDay;
+    private String selectedDate="";
+    private String selectedYear="";
+    private String selectedMonth="";
+    private String selectedDay="";
     private String currentMonth;
     private String currentYear;
     private String currentDay;
@@ -201,10 +202,14 @@ public class dayFragment extends Fragment {
 
 
         //선택된 날짜설정
-        selectedYear=currentYear;
-        selectedMonth=currentMonth;
-        selectedDay=currentDay;
-        selectedDate=currentYear+"-"+currentMonth+"-"+currentDay;
+        if(selectedYear.isEmpty())
+            selectedYear=currentYear;
+        if(selectedMonth.isEmpty())
+            selectedMonth=currentMonth;
+        if(selectedDay.isEmpty())
+            selectedDay=currentDay;
+        if(selectedDate.isEmpty())
+            selectedDate=currentYear+"-"+currentMonth+"-"+currentDay;
 
 
         //캘린더설정
@@ -372,5 +377,11 @@ public class dayFragment extends Fragment {
         }
 
     }
+
+    public void ReFresh(){
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.detach(this).attach(this).commit();
+    }
+
 
 }

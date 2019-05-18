@@ -254,6 +254,8 @@ public class MainActivity extends AppCompatActivity {
             wFragment.ProcessEvent();
             wFragment.LoadGrid();
 
+            //wFragment.ReFresh();
+
         }
         else {
             selected = dFragment;
@@ -280,6 +282,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fragmentManager=getSupportFragmentManager();
         FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.container,selected).commit();
+
     }
 
     public void KillApp(){
