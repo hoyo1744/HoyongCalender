@@ -81,6 +81,7 @@ public class dayFragment extends Fragment {
     }
 
     //선언
+    private final int LIST_NUMS=1;
     private SingerAdapter adapter;
     private TextView dayCalender;
     private String selectedDate="";
@@ -342,14 +343,28 @@ public class dayFragment extends Fragment {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         //super.onCreateContextMenu(menu, v, menuInfo);
+
+        //헤드예외
+        AdapterView.AdapterContextMenuInfo info=(AdapterView.AdapterContextMenuInfo)menuInfo;
+        int pos=info.position;
+        if(pos==0)
+            return ;
+
         getActivity().getMenuInflater().inflate(R.menu.menu_detail_event, menu);
     }
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
         try {
-            SingerItem singerItem = (SingerItem) adapter.getItem(info.position);
-            switch(item.getItemId()){
+            int pos = info.position;
+            //헤드 예외처리
+            if (pos == 0)
+                return super.onContextItemSelected(item);
+
+            pos -= LIST_NUMS;
+
+            SingerItem singerItem = (SingerItem) adapter.getItem(pos);
+            switch (item.getItemId()) {
                 case R.id.itemShowEvent:
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
@@ -373,8 +388,8 @@ public class dayFragment extends Fragment {
                     return super.onContextItemSelected(item);
             }
         }catch(Exception e){
-            return super.onContextItemSelected(item);
-        }
+                return super.onContextItemSelected(item); }
+
 
     }
 
