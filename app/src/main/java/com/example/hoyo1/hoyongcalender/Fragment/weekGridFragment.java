@@ -95,7 +95,6 @@ public class weekGridFragment extends Fragment {
         }
     }
 
-
     //변수선언
     private final int GRID_NUMS=7;
     private MaterialCalendarView weekCalender;
@@ -103,7 +102,6 @@ public class weekGridFragment extends Fragment {
     private CalendarDay currentShowLastDay;
     private GridAdapter gridAdapter;
     private CalendarDay currentDay;
-    private SingerAdapter adapter;
     private GridViewWithHeaderAndFooter gridView;
 
 
@@ -371,35 +369,35 @@ public class weekGridFragment extends Fragment {
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
         try {
-            // 헤더라이브러리때문에 기본적인으로 7이 추가된다.
             int pos=info.position;
 
             //헤드 예외처리
             if(pos==0)
                 return super.onContextItemSelected(item);
 
+            // 헤더라이브러리때문에 기본적인으로 7이 추가된다.
             pos-=GRID_NUMS;
             GridSingerItem singerItem = (GridSingerItem) gridAdapter.getItem(pos);
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            AlertDialog dialog;
             switch(item.getItemId()){
                 case R.id.itemShowEvent:
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
 
                     //대화상자설정
                     builder.setTitle("자세히보기");
                     builder.setMessage(singerItem.getContent());
                     builder.setIcon(android.R.drawable.ic_dialog_info);
 
-
-                    //예 버튼 추가
-                    builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    builder.setPositiveButton("확인" ,new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
 
                         }
                     });
-
-                    AlertDialog dialog = builder.create();
+                    dialog= builder.create();
                     dialog.show();
                     return true;
+
                 default:
                     return super.onContextItemSelected(item);
             }
@@ -431,5 +429,6 @@ public class weekGridFragment extends Fragment {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.detach(this).attach(this).commit();
     }
+
 
 }

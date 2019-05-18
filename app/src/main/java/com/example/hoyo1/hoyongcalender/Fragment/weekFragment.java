@@ -318,6 +318,8 @@ public class weekFragment extends Fragment {
                     AlertDialog dialog = builder.create();
                     dialog.show();
                     return true;
+
+
                 default:
                     return super.onContextItemSelected(item);
             }
