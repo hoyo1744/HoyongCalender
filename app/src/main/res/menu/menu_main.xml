@@ -4,4 +4,8 @@
         android:id="@+id/itemAddEvent"
         android:title="@string/menu_add_event"
         />
+
+    <item
+        android:id="@+id/itemAppClose"
+        android:title="@string/menu_App_close"/>
 </menu>

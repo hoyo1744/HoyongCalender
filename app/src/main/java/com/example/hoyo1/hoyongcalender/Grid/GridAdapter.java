@@ -37,7 +37,6 @@ public class GridAdapter extends BaseAdapter {
         return ITEM_VIEW_MAX;
     }
     public void addItem(GridSingerItem item){
-
         Items.add(item);
     }
     @Override

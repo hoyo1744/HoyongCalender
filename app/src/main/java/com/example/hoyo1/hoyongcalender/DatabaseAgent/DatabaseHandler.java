@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.example.hoyo1.hoyongcalender.MainActivity;
+
 public class DatabaseHandler {
 
     DatabaseHelper mHelper;
@@ -21,17 +23,26 @@ public class DatabaseHandler {
 
 
     public Cursor Select(){
-        mDB=mHelper.getReadableDatabase();
-        Cursor c=mDB.query("calender", null, null, null, null, null, null);
-        return c;
+        try {
+            mDB = mHelper.getReadableDatabase();
+            Cursor c = mDB.query("calender", null, null, null, null, null, null);
+            return c;
+        }catch(Exception e){
+            ((MainActivity)MainActivity.mainContext).ShowErrorMessage("Database Select Error");
+            return null;
+        }
     }
 
     public void Insert(String date,String content){
-        mDB=mHelper.getWritableDatabase();
-        ContentValues cInfo=new ContentValues();
-        cInfo.put("date",date);
-        cInfo.put("content",content);
-        mDB.insert("calender",null,cInfo);
+        try {
+            mDB = mHelper.getWritableDatabase();
+            ContentValues cInfo = new ContentValues();
+            cInfo.put("date", date);
+            cInfo.put("content", content);
+            mDB.insert("calender", null, cInfo);
+        }catch(Exception e){
+            ((MainActivity)MainActivity.mainContext).ShowErrorMessage("Database Insert Error");
+        }
     }
 
     public void close() {

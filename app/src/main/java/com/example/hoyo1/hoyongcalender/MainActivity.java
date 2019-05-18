@@ -1,13 +1,17 @@
 package com.example.hoyo1.hoyongcalender;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -81,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
 
     //변수선언
     public static ArrayList<CalenderInfo> listCalender;
+    public static Context mainContext;
     private boolean bIsDatabaseOpen;
     private DatabaseHandler dbHandler;
     private monthFragment mFragment;
@@ -97,6 +102,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //메인액티비티컨텍스트
+        mainContext=this;
+
         //초기화
         Init();
         //디비오픈
@@ -121,6 +130,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.itemAddEvent:
                 Intent intent = new Intent(getApplicationContext(), EventInfoActivity.class);
                 startActivityForResult(intent, REQUEST_ADD_EVENT);
+                break;
+            case R.id.itemAppClose:
+                ShowCloseMessage("종료하기","종료하시겠습니까?");
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -217,8 +229,7 @@ public class MainActivity extends AppCompatActivity {
                 listCalender.add(cInfo);
             }
         }else{
-            Log.e("에러","리스트불러오기");
-            android.os.Process.killProcess(android.os.Process.myPid());
+            ShowErrorMessage("DataBase Open Error");
         }
 
     }
@@ -243,8 +254,6 @@ public class MainActivity extends AppCompatActivity {
             //그리드버전
             wFragment.ProcessEvent();
             wFragment.LoadGrid();
-
-
 
         }
         else {
@@ -271,6 +280,56 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fragmentManager=getSupportFragmentManager();
         FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.container,selected).commit();
+    }
+
+    public void KillApp(){
+        ActivityCompat.finishAffinity(this);
+        System.runFinalizersOnExit(true);
+        System.exit(0);
+    }
+
+    public void ShowErrorMessage(String content){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        //대화상자설정
+        builder.setTitle("에러");
+        builder.setMessage(content);
+        builder.setIcon(android.R.drawable.ic_dialog_alert);
+
+
+        //예 버튼 추가
+        builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                KillApp();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+    public void ShowCloseMessage(String title,String content){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        //대화상자설정
+        builder.setTitle(title);
+        builder.setMessage(content);
+        builder.setIcon(android.R.drawable.ic_dialog_alert);
+
+
+        //예 버튼 추가
+        builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                KillApp();
+            }
+        }).setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
 }
