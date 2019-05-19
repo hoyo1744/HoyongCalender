@@ -259,9 +259,6 @@ public class weekGridFragment extends Fragment {
 
         gridView.setAdapter(gridAdapter);
         gridAdapter.notifyDataSetChanged();
-
-
-
     }
     public void LoadGridNoSetAdapter(){
         gridAdapter.removeAll();
@@ -314,6 +311,7 @@ public class weekGridFragment extends Fragment {
         return strCompareDate;
     }
     public void SetCalender(){
+
         //달력설정
         weekCalender.state().edit()
                 .setFirstDayOfWeek(Calendar.SUNDAY)
@@ -322,13 +320,12 @@ public class weekGridFragment extends Fragment {
 
         //달변경
         weekCalender.setOnMonthChangedListener(new OnMonthChangedListener() {
-
-
             @Override
             public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
                 currentShowFirstDay=new CalendarDay(date.getYear(),date.getMonth()+1,date.getDay());
                 currentShowLastDay=new CalendarDay(date.getYear(),date.getMonth()+1,date.getDay()+7);
-                LoadGridNoSetAdapter();
+                    //LoadGridNoSetAdapter();
+                LoadGrid();
             }
 
 
@@ -348,6 +345,7 @@ public class weekGridFragment extends Fragment {
         weekCalender=(MaterialCalendarView)getView().findViewById(R.id.weekGridCaleder);
         gridView=(GridViewWithHeaderAndFooter ) getView().findViewById(R.id.weekGridView);
         gridAdapter=new GridAdapter(getContext());
+
         registerForContextMenu(gridView);
 
     }

@@ -192,6 +192,8 @@ public class MainActivity extends AppCompatActivity {
         tabs.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+
+
                 int position=tab.getPosition();
                 InitialOpenFragment(position);
             }
@@ -237,6 +239,7 @@ public class MainActivity extends AppCompatActivity {
     public void LateOpenFragment(){
         Fragment selected=null;
         if(strParam.equals("month")) {
+
             selected = mFragment;
             mFragment.ProcessEvent();
         }
@@ -254,7 +257,6 @@ public class MainActivity extends AppCompatActivity {
             wFragment.ProcessEvent();
             wFragment.LoadGrid();
 
-            //wFragment.ReFresh();
 
         }
         else {
@@ -270,19 +272,20 @@ public class MainActivity extends AppCompatActivity {
         Fragment selected=null;
         if(position==0){
             strParam="month";
+            mFragment=new monthFragment();
             selected=mFragment;
         }else if(position==1){
             strParam="week";
+            wFragment= new weekGridFragment();
             selected=wFragment;
         }else if(position==2){
             strParam="day";
+            dFragment=new dayFragment();
             selected=dFragment;
         }
-
         FragmentManager fragmentManager=getSupportFragmentManager();
         FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.container,selected).commit();
-
     }
 
     public void KillApp(){
@@ -334,5 +337,4 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-
 }

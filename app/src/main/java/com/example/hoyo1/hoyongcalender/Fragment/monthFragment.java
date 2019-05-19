@@ -1,5 +1,6 @@
 package com.example.hoyo1.hoyongcalender.Fragment;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import com.example.hoyo1.hoyongcalender.decorator.SundayDecorator;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 
 import java.sql.Date;
 import java.util.Calendar;
@@ -73,12 +75,14 @@ public class monthFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+
     }
+
 
 
     //선언
     private MaterialCalendarView monthCalender;
-
 
 
     @Override
@@ -97,7 +101,6 @@ public class monthFragment extends Fragment {
 
         //이벤트설정
         ProcessEvent();
-
 
     }
 
@@ -128,13 +131,14 @@ public class monthFragment extends Fragment {
                     + " must implement OnFragmentInteractionListener");
         }
     }
-    */
-
+*/
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
     }
+
+
 
     /**
      * This interface must be implemented by activities that contain this
@@ -175,23 +179,19 @@ public class monthFragment extends Fragment {
             eventDayDecorator=new EventDayDecorator(day, Color.RED,getActivity());
             monthCalender.addDecorators(eventDayDecorator);
         }
-
     }
     public void SetCalender(){
         //달력설정
         monthCalender.state().edit()
                 .setFirstDayOfWeek(Calendar.SUNDAY)
                 .setCalendarDisplayMode(CalendarMode.MONTHS).commit();
-
-
         monthCalender.addDecorators(new SundayDecorator(),new SaturdayDecorator());
-
     }
-
     public void ReFresh(){
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.detach(this).attach(this).commit();
     }
+
 
 
 }

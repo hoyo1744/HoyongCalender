@@ -84,10 +84,10 @@ public class dayFragment extends Fragment {
     private final int LIST_NUMS=1;
     private SingerAdapter adapter;
     private TextView dayCalender;
-    private String selectedDate="";
-    private String selectedYear="";
-    private String selectedMonth="";
-    private String selectedDay="";
+    public String selectedDate="";
+    public String selectedYear="";
+    public String selectedMonth="";
+    public String selectedDay="";
     private String currentMonth;
     private String currentYear;
     private String currentDay;
@@ -106,6 +106,7 @@ public class dayFragment extends Fragment {
                 GetDayOfWeek(selectedDate);
                 LoadList(selectedDate);
                 dayCalender.setText(dayOfWeek+","+selectedDate);
+
             } else if (v == FutureBtn) {
                 CalculateFutureDate();
                 GetDayOfWeek(selectedDate);
@@ -397,6 +398,8 @@ public class dayFragment extends Fragment {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.detach(this).attach(this).commit();
     }
+
+
 
 
 }
