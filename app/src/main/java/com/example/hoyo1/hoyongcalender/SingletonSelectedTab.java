@@ -13,8 +13,6 @@ public class SingletonSelectedTab {
         return this.position;
     }
 
-
-
     private static class SingletonSelectedTabHolder{
         public static final SingletonSelectedTab instance=new SingletonSelectedTab();
     }
