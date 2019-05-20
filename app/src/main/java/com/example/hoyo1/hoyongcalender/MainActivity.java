@@ -308,7 +308,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.container,selected).commit();
     }
-    //
+    
     public void KillApp(){
         ActivityCompat.finishAffinity(this);
         System.runFinalizersOnExit(true);
