@@ -102,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
     public static String strParam;
     private SQLiteDatabase db;
     private Toolbar toolbar;
+    private TabLayout tabs;
 
 
 
@@ -125,7 +126,14 @@ public class MainActivity extends AppCompatActivity {
         LoadList();
 
         //월간으로 초기설정
-        InitialOpenFragment(0);
+        if(SingletonSelectedTab.getInstance().getPosition()==-1) {
+            SingletonSelectedTab.getInstance().setPosition(0);
+            InitialOpenFragment(0);
+        }else {
+            InitialOpenFragment(SingletonSelectedTab.getInstance().getPosition());
+            tabs.setScrollPosition(SingletonSelectedTab.getInstance().getPosition(),0f,true);
+        }
+
     }
 
     @Override
@@ -189,10 +197,11 @@ public class MainActivity extends AppCompatActivity {
         actionBar.setDisplayShowTitleEnabled(false);
 
         //탭설정
-        TabLayout tabs=(TabLayout)findViewById(R.id.tabs);
+        tabs=(TabLayout)findViewById(R.id.tabs);
         tabs.addTab(tabs.newTab().setText("월간"));
         tabs.addTab(tabs.newTab().setText("주간"));
         tabs.addTab(tabs.newTab().setText("일간"));
+
 
 
 
@@ -248,11 +257,11 @@ public class MainActivity extends AppCompatActivity {
     public void LateOpenFragment(){
         Fragment selected=null;
         if(strParam.equals("month")) {
-
             selected = mFragment;
             mFragment.ProcessEvent();
         }
         else if(strParam.equals("week")) {
+
             selected = wFragment;
 
             /*
@@ -280,14 +289,17 @@ public class MainActivity extends AppCompatActivity {
     public void InitialOpenFragment(int position){
         Fragment selected=null;
         if(position==0){
+            SingletonSelectedTab.getInstance().setPosition(position);
             strParam="month";
             mFragment=new monthFragment();
             selected=mFragment;
         }else if(position==1){
+            SingletonSelectedTab.getInstance().setPosition(position);
             strParam="week";
             wFragment= new weekGridFragment();
             selected=wFragment;
         }else if(position==2){
+            SingletonSelectedTab.getInstance().setPosition(position);
             strParam="day";
             dFragment=new dayFragment();
             selected=dFragment;
@@ -356,6 +368,10 @@ public class MainActivity extends AppCompatActivity {
             ShowCloseMessage("종료하기","종료하시겠습니까?");
         }
     }
+
+
+
+
 
 
 
