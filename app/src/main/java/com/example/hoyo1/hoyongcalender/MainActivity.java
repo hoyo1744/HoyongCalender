@@ -1,8 +1,10 @@
 package com.example.hoyo1.hoyongcalender;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.design.widget.TabLayout;
@@ -10,6 +12,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.IntentCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -86,6 +89,8 @@ public class MainActivity extends AppCompatActivity {
 
     //변수선언
     public static ArrayList<CalenderInfo> listCalender;
+    public static CalendarDay InitialToday;
+    private long backButtonPushTime= 0;
     public static Context mainContext;
     private boolean bIsDatabaseOpen;
     private DatabaseHandler dbHandler;
@@ -97,13 +102,17 @@ public class MainActivity extends AppCompatActivity {
     public static String strParam;
     private SQLiteDatabase db;
     private Toolbar toolbar;
-    private long backButtonPushTime= 0;
+
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //앱시작시 오늘의 날짜설정
+        InitialToday=CalendarDay.today();
 
         //메인액티비티컨텍스트
         mainContext=this;
@@ -294,6 +303,8 @@ public class MainActivity extends AppCompatActivity {
         System.exit(0);
     }
 
+
+
     public void ShowErrorMessage(String content){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -345,5 +356,7 @@ public class MainActivity extends AppCompatActivity {
             ShowCloseMessage("종료하기","종료하시겠습니까?");
         }
     }
+
+
 
 }

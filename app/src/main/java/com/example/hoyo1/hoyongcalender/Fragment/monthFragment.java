@@ -88,7 +88,6 @@ public class monthFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        
 
         //초기화
         monthCalender=(MaterialCalendarView)getView().findViewById(R.id.monthCalander);
