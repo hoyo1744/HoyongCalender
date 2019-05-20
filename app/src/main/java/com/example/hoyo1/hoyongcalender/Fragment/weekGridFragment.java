@@ -111,6 +111,7 @@ public class weekGridFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+
         //초기화
         Init();
 
@@ -128,6 +129,7 @@ public class weekGridFragment extends Fragment {
 
         //그리드뷰
         LoadGrid();
+
 
     }
 
@@ -342,7 +344,7 @@ public class weekGridFragment extends Fragment {
     }
     public void Init(){
         //초기화
-        weekCalender=(MaterialCalendarView)getView().findViewById(R.id.weekGridCaleder);
+        weekCalender=(MaterialCalendarView)getView().findViewById(R.id.weekGridCalander);
         gridView=(GridViewWithHeaderAndFooter ) getView().findViewById(R.id.weekGridView);
         gridAdapter=new GridAdapter(getContext());
 

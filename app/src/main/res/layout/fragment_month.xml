@@ -9,7 +9,7 @@
     <!-- TODO: Update blank fragment layout -->
     <com.prolificinteractive.materialcalendarview.MaterialCalendarView
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/monthCaleder"
+        android:id="@+id/monthCalander"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:mcv_selectionColor="#a9dbf0cb"

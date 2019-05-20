@@ -80,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int REQUEST_ADD_EVENT= 10000;
     public static final int REQUEST_DETAIL_EVENT=10001;
 
+
     //디비이름
     private final String dbName="calender";
 
@@ -96,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
     public static String strParam;
     private SQLiteDatabase db;
     private Toolbar toolbar;
+    private long backButtonPushTime= 0;
 
 
     @Override
@@ -113,6 +115,8 @@ public class MainActivity extends AppCompatActivity {
         //리스트로드
         LoadList();
 
+        //월간으로 초기설정
+        InitialOpenFragment(0);
     }
 
     @Override
@@ -166,8 +170,8 @@ public class MainActivity extends AppCompatActivity {
         listCalender=new ArrayList<CalenderInfo>();
         mFragment=new monthFragment();
         //wFragment=new weekFragment();
-        wFragment=new weekGridFragment();
-        dFragment=new dayFragment();
+        //wFragment=new weekGridFragment();
+        //dFragment=new dayFragment();
         bIsDatabaseOpen=false;
 
         //액션바설정
@@ -183,17 +187,13 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        //월간으로 초기설정
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container,mFragment).commit();
-        strParam="month";
+
+
 
 
         tabs.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-
-
                 int position=tab.getPosition();
                 InitialOpenFragment(position);
             }
@@ -337,4 +337,13 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+    @Override
+    public void onBackPressed(){
+        if(System.currentTimeMillis()-backButtonPushTime>=2000){
+            backButtonPushTime=System.currentTimeMillis();
+        }else if(System.currentTimeMillis()-backButtonPushTime<2000){
+            ShowCloseMessage("종료하기","종료하시겠습니까?");
+        }
+    }
+
 }

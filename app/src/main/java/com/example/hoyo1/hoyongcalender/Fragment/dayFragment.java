@@ -84,10 +84,10 @@ public class dayFragment extends Fragment {
     private final int LIST_NUMS=1;
     private SingerAdapter adapter;
     private TextView dayCalender;
-    public String selectedDate="";
-    public String selectedYear="";
-    public String selectedMonth="";
-    public String selectedDay="";
+    private String selectedDate="";
+    private String selectedYear="";
+    private String selectedMonth="";
+    private String selectedDay="";
     private String currentMonth;
     private String currentYear;
     private String currentDay;

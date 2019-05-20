@@ -88,9 +88,10 @@ public class monthFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        
 
         //초기화
-        monthCalender=(MaterialCalendarView)getView().findViewById(R.id.monthCaleder);
+        monthCalender=(MaterialCalendarView)getView().findViewById(R.id.monthCalander);
 
 
         //캘린더옵션세팅
@@ -101,6 +102,7 @@ public class monthFragment extends Fragment {
 
         //이벤트설정
         ProcessEvent();
+
 
     }
 

@@ -108,6 +108,7 @@ public class weekFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+
         //초기화
         Init();
 
@@ -125,6 +126,7 @@ public class weekFragment extends Fragment {
 
         //리스트뷰
         LoadList(currentDay);
+
 
     }
 
