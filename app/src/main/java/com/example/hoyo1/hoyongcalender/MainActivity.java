@@ -127,11 +127,13 @@ public class MainActivity extends AppCompatActivity {
 
         //월간으로 초기설정
         if(SingletonSelectedTab.getInstance().getPosition()==-1) {
-            SingletonSelectedTab.getInstance().setPosition(0);
             InitialOpenFragment(0);
         }else {
+            tabs.setScrollPosition(SingletonSelectedTab.getInstance().getPosition(), 0f, true);
+            //*안드로이드스튜디오에서는 제대로 작동하지만, 웹 모바일 테스트에서는 제대로 작동하지 않아서 추가한 코드.
+            tabs.getTabAt(SingletonSelectedTab.getInstance().getPosition()).select();
+
             InitialOpenFragment(SingletonSelectedTab.getInstance().getPosition());
-            tabs.setScrollPosition(SingletonSelectedTab.getInstance().getPosition(),0f,true);
         }
 
     }
@@ -308,7 +310,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.container,selected).commit();
     }
-    
+
     public void KillApp(){
         ActivityCompat.finishAffinity(this);
         System.runFinalizersOnExit(true);
